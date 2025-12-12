@@ -4,11 +4,11 @@
         <title>Nominees | </title><!--Name-->
         <link rel="stylesheet" href="../years.css" type="text/css">
         <link rel="icon" href="../files/trilobite.png" sizes="348x348" type="image.png">
-        <link rel="preload" href="../files/" as="image"><!--href image source-->
+        <link rel="preload" href="../files/nominee-profiles/" as="image"><!--href image source-->
     </head>
     <body>
         <header id="bio">
-            <img src="../files/"><!--src image source-->
+            <img src="../files/nominee-profiles/"><!--src image source-->
             <p id="name"></p><!--Name-->
         </header>
         <main>
