@@ -11,7 +11,8 @@ header {
 //    grid-template-columns: repeat(3, 1fr);
     align-items: center;
     min-height: fit-content;
-    height: 11in;
+    height: 20in;
+//  height: 11in;
 }
 nav {
     border: 2px solid rgb(82, 56, 33);
