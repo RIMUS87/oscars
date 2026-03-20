@@ -11,9 +11,10 @@ header {
 //    grid-template-columns: repeat(3, 1fr);
     align-items: center;
     min-height: fit-content;
-    justify-content: center;
+    height: 25in;
 }
 nav {
+    border: 2px solid rgb(0, 0, 0);
     text-align: center;
     display: flex;
     height: inherit;
@@ -21,13 +22,13 @@ nav {
     flex-wrap: wrap;
     width: fit-content;
     align-items: center;
+    font-weight: bold;
 }
 a {
-//    background-color: rgba(255, 255, 255, 0.596);
+//    background-color: rgba(39, 255, 226, 0.596);
     color: black;
     text-decoration: none;
     margin: 1px 2px;
-    font-weight: bold;
     width: fit-content
 }
 a:hover {
@@ -86,6 +87,8 @@ img {
     grid-column: span 3;
     height: fit-content;
     font-size: 150%;
+    border-right: solid black;
+    border-bottom: solid black;
 }
 #girder-top {
     height: 1em;

@@ -61,8 +61,8 @@ a:hover {
 .left-sidebar, .right-sidebar {
     border-left: 5px solid black;
     border-right: 5px solid black;
-    min-width: 10%;
-    max-width: 10%;
+    min-width: 23%;
+    max-width: 30%;
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -86,7 +86,7 @@ a:hover {
 }
 .year {
     border: none;
-    font-size: 120%;
+    font-size: 220%;
 }
 .short-section {
     display: flex;
