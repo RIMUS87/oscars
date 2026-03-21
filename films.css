@@ -1,9 +1,5 @@
 body {
-    background-color: rgba(65, 192, 14, 0.808);
-    transition: background-color 400ms ease-in .5s;
-}
-body:hover {
-    background-color: rgb(253, 168, 182);
+    background-color: rgb(212, 199, 74);
 }
 header {
     border: 7px solid rgb(0, 0, 0);
@@ -14,16 +10,16 @@ header {
     align-items: center;
 }
 main {
-    display: flex;
+//    display: flex;
 }
-table {
+ table {
     border: 7px solid rgb(0, 0, 0);
     background-color: rgb(128, 127, 127);
-    table-layout: fixed;
-    width: 7in;
+//    table-layout: fixed;
+//    width: 7in;
     text-align: center;
-    position: relative;
-    left: 10.7in;
+//    position: relative;
+//    left: 10.7in;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 tr {
@@ -33,73 +29,59 @@ th {
     border: 1px solid black;
     background-color: rgb(238, 199, 70);
     font-size: 130%;
+    font-weight: bolder;
+    padding: 5px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 td {
     border: 1px solid black;
     background-color: white;
+    padding: 5px;
 }
 section {
-    border: 3px solid rgb(0, 0, 0);
+    border: 5px solid rgb(0, 0, 0);
+    border-top: none;
     background-color: rgb(250, 250, 250);
-    margin-top: 10px;
-    width: 2.75in;
+//    width: 2.75in;
     text-align: center;
-}
-.main-title {
-    font-size: 60px;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    position: absolute;
-    left: 3.6in;
+//    position: absolute;
+//    right: 5%;
+//    top: 60px;
 }
 img {
-    border-radius: 20px;
+//    border-radius: 10px;
+    border-right: 5px solid rgb(0, 0, 0);
     max-width: 2.5in;
     height: auto;
-    margin-top: 30px;
-    position: absolute;
-    left: 3.10in;
-    top: 100px;
-}
-.noms {
-    top: 220px;
-//    left: 33.3%;
-}
-.wins {
-    top: 60px;
-//    left: 33.3%;
-}
-#contributors {
-    top: 410px;
-//    left: 33.3%;
-}
-section {
-    position: absolute;
-    right: 5%;
-    top: 60px;
-    width: 2in;
-}
-nav {
-    position: relative;
-//    right: 52%;
-//    top: 90%;
-}
-.sidebar {
-    position: fixed;
-    top: 0in;
-    left: 0in;
-    z-index: 1;
-    width: 1.5in;
-    height: 100%;
-    background-color: rgb(99, 99, 99);
-    display: flex;
-    flex-direction: column;
-    font-weight: bold;
-    justify-content: space-around;
-    text-align: center;
+    margin-right: 30px;
+//    position: absolute;
+//    left: 3.10in;
 }
 a {
-    background-color: white;
     color: black;
-    border: 5px solid rgb(194, 169, 25);
     text-decoration: none;
+}
+a:hover {
+    color: rgb(255, 0, 0);
+}
+p {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 120%;
+    font-weight: bold;
+//    border: 1px solid black;
+    padding: 10px;
+    margin-right: 20px;
+}
+h1 {
+    position: absolute;
+    left: 2.9in;
+}
+.won {
+    background-color: rgb(253, 209, 12);
+}
+.lost {
+    background-color: rgb(145, 145, 145);
+}
+#info {
+    display: flex;
 }

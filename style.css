@@ -25,3 +25,6 @@ a {
 a:hover {
     background-color: rgb(197, 179, 16);
 }
+#hidden {
+    color: rgb(182, 230, 86);
+}
