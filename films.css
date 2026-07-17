@@ -82,6 +82,9 @@ h1 {
 .lost {
     background-color: rgb(145, 145, 145);
 }
+.ballot {
+    font-weight: bold;
+}
 #info {
     display: flex;
 }
