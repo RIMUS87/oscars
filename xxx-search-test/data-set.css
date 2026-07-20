@@ -1,0 +1,18 @@
+a {
+    color: #000000;
+    font-weight: bold;
+}
+.dataset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.webpage {
+    border: 2px solid #000000;
+    text-align: center;
+    height: fit-content;
+    width: fit-content;
+    padding: 5px;
+    margin: 5px;
+}
