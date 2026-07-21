@@ -1,13 +1,15 @@
-import { initializeApp } from "https://gstatic.com";
+import { initializeApp } from "https://www.gstatic.com";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://gstatic.com";
 
 // YOUR CONFIG OBJECT HERE
-const firebaseConfig = { apiKey: "AIzaSyBrKSaKZ9eP1RJ9neHC8CFf6qjSCB_9Q-4",
+const firebaseConfig = { 
+    apiKey: "AIzaSyBrKSaKZ9eP1RJ9neHC8CFf6qjSCB_9Q-4",
     authDomain: "test2-5a459.firebaseapp.com",
     projectId: "test2-5a459",
     storageBucket: "test2-5a459.firebasestorage.app",
     messagingSenderId: "842448219074",
-    appId: "1:842448219074:web:24763cfa6b2d3a073a045b" };
+    appId: "1:842448219074:web:24763cfa6b2d3a073a045b" 
+};
 
 const auth = getAuth(initializeApp(firebaseConfig));
 
