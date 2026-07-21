@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Accounts & Profiles</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eef2f5;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #8898aa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            color: #4a90e2;
+            border-bottom: 2px solid #4a90e2;
+            margin-bottom: -2px;
+        }
+        .form-panel {
+            display: none;
+        }
+        .form-panel.active {
+            display: block;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 22px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus {
+            border-color: #4a90e2;
+        }
+        button.submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        button.submit-btn:hover {
+            background-color: #357abd;
+        }
+        /* Profile Styling */
+        .profile-card {
+            text-align: center;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background-color: #eef2f5;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            color: #8898aa;
+        }
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .profile-email {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        .profile-bio {
+            font-size: 14px;
+            color: #555;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: left;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('register')">Register</button>
+        <button class="tab-btn" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" onclick="switchTab('profile')">Profile</button>
+    </div>
+
+    <!-- Register Form Panel -->
+    <div id="register" class="form-panel active">
+        <h2>Create an Account</h2>
+        <form onsubmit="event.preventDefault(); switchTab('profile');">
+            <div class="form-group">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" required placeholder="Choose a username">
+            </div>
+            <div class="form-group">
+                <label for="reg-email">Email Address</label>
+                <input type="email" id="reg-email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" required placeholder="Create a password">
+            </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- Login Form Panel -->
+    <div id="login" class="form-panel">
+        <h2>Welcome Back</h2>
+        <form onsubmit="event.preventDefault(); switchTab('profile');">
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="submit-btn">Log In</button>
+        </form>
+    </div>
+
+    <!-- Profile View Panel -->
+    <div id="profile" class="form-panel">
+        <h2>Your Profile</h2>
+        <div class="profile-card">
+            <div class="avatar">👤</div>
+            <div class="profile-name">Alex Developer</div>
+            <div class="profile-email">alex@example.com</div>
+            <div class="profile-bio">
+                <strong>Bio:</strong><br>
+                Welcome to your profile page! This area displays your personalized account data retrieved from the website's database.
+            </div>
+            <button class="submit-btn" style="background-color: #e57373;" onclick="switchTab('login')">Log Out</button>
+        </div>
+    </div>
+</div>
+
+<!-- Basic Frontend Navigation Logic -->
+<script>
+    function switchTab(tabId) {
+        // Hide all form panels
+        document.querySelectorAll('.form-panel').forEach(panel => {
+            panel.classList.remove('active');
+        });
+        // Deactivate all tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Activate selected panel and button
+        document.getElementById(tabId).classList.add('active');
+        
+        // Highlight correct button based on text match
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if(btn.innerText.toLowerCase() === tabId) {
+                btn.classList.add('active');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
