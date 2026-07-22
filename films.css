@@ -53,7 +53,7 @@ img {
     border-right: 5px solid rgb(0, 0, 0);
     max-width: 2.5in;
     height: auto;
-//    margin-right: 30px;
+    margin-right: 33px;
 //    position: absolute;
 //    left: 3.10in;
 }
@@ -101,6 +101,7 @@ button {
     height: 3em;
     width: 3em;
     border: none;
+    margin-right: 0px;
 }
 .hidden {
     display: none;
