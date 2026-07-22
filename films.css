@@ -53,7 +53,7 @@ img {
     border-right: 5px solid rgb(0, 0, 0);
     max-width: 2.5in;
     height: auto;
-    margin-right: 30px;
+//    margin-right: 30px;
 //    position: absolute;
 //    left: 3.10in;
 }
@@ -76,6 +76,11 @@ h1 {
     position: absolute;
     left: 2.9in;
 }
+button {
+    height: 100%;
+    width: 100%;
+    display: none;
+}
 .won {
     background-color: rgb(253, 209, 12);
 }
@@ -84,6 +89,24 @@ h1 {
 }
 .ballot {
     font-weight: bold;
+}
+.picks {
+    margin-top: 2em;
+    margin-left: 16em;
+    height: 5em;
+    width: 5em;
+    border-radius: 9px;
+}
+.fit-image {
+    height: 3em;
+    width: 3em;
+    border: none;
+}
+.hidden {
+    display: none;
+}
+.watch {
+//    background-color: green;
 }
 #info {
     display: flex;
