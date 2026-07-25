@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "oscars",
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "oscars"
+	}
+}
