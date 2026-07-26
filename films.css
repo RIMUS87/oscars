@@ -103,11 +103,13 @@ button {
     border: none;
     margin-right: 0px;
 }
+.img-no-border {
+    height: 3em;
+    width: 3em;
+    margin-right: 0px;
+}
 .hidden {
     display: none;
-}
-.watch {
-//    background-color: green;
 }
 #info {
     display: flex;
