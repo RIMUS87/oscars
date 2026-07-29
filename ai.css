@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Professional Film Database Stylesheet (films.css)
+   ========================================================================== */
+
+/* --- Global Reset & Variables --- */
+:root {
+  --bg-primary: #121214;
+  --bg-surface: #1e1e24;
+  --bg-surface-hover: #2a2a32;
+  --text-primary: #f5f5f7;
+  --text-muted: #a0a0ab;
+  --accent: #e50914; /* Cinema Red */
+  --accent-gold: #e5b842; /* Award Gold */
+  --border-color: #2e2e38;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Typography & Links --- */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-gold);
+}
+
+/* --- Navigation Header --- */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: var(--bg-surface);
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+header a {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+header a:hover {
+  color: var(--text-primary);
+}
+
+/* Fix for the empty <p></p> tags in the provided HTML markup */
+header p {
+  display: none; 
+}
+
+/* --- Layout Main Container --- */
+main {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Info Section Layout (Sidebar + Meta) --- */
+#info {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2.5rem;
+  background-color: var(--bg-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  align-items: start;
+}
+
+#info img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  background-color: #2e2e38; /* Placeholder color before load */
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+#info p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* Clean up extra breaks from user markup */
+#info p br {
+  display: block;
+  content: "";
+  margin-top: 0.5rem;
+}
+
+#info p a {
+  display: inline-block;
+  color: var(--accent-gold);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* --- Mini Table inside Info ("Watched" status) --- */
+table.picks {
+  width: auto;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+}
+
+table.picks td {
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: var(--accent-gold);
+}
+
+table.picks td.img-no-border {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+/* --- Data Tables (Nominations & Awards) --- */
+table:not(.picks) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--bg-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+th {
+  background-color: #25252d;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th[colspan="3"] {
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+  letter-spacing: 0px;
+  text-transform: none;
+  padding: 1.25rem;
+  background-color: var(--bg-surface);
+}
+
+td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+td a {
+  color: var(--text-primary);
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+}
+
+td a:hover {
+  border-bottom-color: var(--accent-gold);
+}
+
+/* --- Cleanup Rule for Spacer Breaks --- */
+main > br {
+  display: none;
+}
+
+/* --- Responsive Layout (Mobile Devices) --- */
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  #info {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  
+  #info img {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  table.picks {
+    margin: 1.5rem auto 0 auto;
+  }
+  
+  th, td {
+    padding: 0.75rem 1rem;
+  }
+}
