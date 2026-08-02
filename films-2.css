@@ -105,10 +105,19 @@ a:hover {
 .label {
     font-size: 90%;
 }
+.won {
+    background-color: rgb(253, 209, 12);
+}
+.lost {
+    background-color: rgb(145, 145, 145);
+}
+.hidden {
+    display: none;
+}
 #poster {
     border: 5px solid black;
     width: 2.5in;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 #awards {
     display: flex;

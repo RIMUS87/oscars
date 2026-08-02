@@ -114,3 +114,17 @@ button {
 #info {
     display: flex;
 }
+.header-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 120%;
+}
+.header-links:hover {
+    background-color: rgb(221, 221, 221);
+    color: black;
+}
