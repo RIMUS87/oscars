@@ -99,10 +99,6 @@ a:hover {
     vertical-align: middle;
     padding: 0;
 }
-.fit {
-    width: fit-content;
-    height: fit-content;
-}
 .label {
     font-size: 90%;
 }
@@ -119,6 +115,10 @@ a:hover {
     height: 1.5em;
     width: 1.5em;
     border-radius: 50%;
+}
+.fit {
+    width: 4em;
+    height: 4em;
 }
 #poster {
     border: 5px solid black;
