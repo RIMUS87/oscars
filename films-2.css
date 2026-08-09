@@ -76,12 +76,13 @@ a:hover {
     width: 100%;
     outline: 2px solid black;
     border-collapse: collapse;
+    background-color: rgb(185, 185, 185);
     font-family: sans-serif;
     font-weight: bold;
     font-size: 120%;
 }
 .header-links:hover {
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(231, 231, 231);
     color: black;
 }
 .box-table {
