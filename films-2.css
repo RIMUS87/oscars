@@ -124,6 +124,7 @@ a:hover {
 #poster {
     border: 5px solid black;
     width: 2.5in;
+    max-height: 3.8in;
     margin-right: 30px;
     margin-left: 40px;
 }
