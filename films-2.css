@@ -11,6 +11,13 @@ header {
     height: 50px;
     justify-content: space-around;
 }
+footer {
+    display: flex;
+//    border: 1px solid black;
+    background-color: white;
+    height: 50px;
+    justify-content: space-around;
+}
 main {
     display: flex;
     border: 2px solid black;
