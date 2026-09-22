@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../player-profile.css" type="text/css">
+        <link rel="icon" href="../files/trilobite.png" sizes="348x348" type="image/png">
+        <script src="../player-profile.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <a class="header-links" href="../years.html">Award Years</a>
+            <a class="header-links" href="../films.html">Films</a>
+            <a class="header-links" href="../index.html">Home</a>
+            <a class="header-links" href="../nominees.html">Nominees</a>
+            <a class="header-links" href="../ballots.html">Ballots</a>
+            <a class="header-links" href="../search.html">Search</a>
+        </header>
+        <div id="bio">
+            <img id=profile-picture src="../files/player-profiles/robby.jpg">
+            <p id="name">Robby</p>
+        </div>
+        <!-- Tab Buttons -->
+        <div class="tab-header">
+        <button class="tab-btn active" onclick="switchTab(event, 'home')">Competition Stats</button>
+        <button class="tab-btn" onclick="switchTab(event, 'about')">Ballots</button>
+        <button class="tab-btn" onclick="switchTab(event, 'contact')">Watched Films</button>
+        </div>
+        <!-- Tab Content Panels -->
+        <div id="home" class="tab-content active">
+        <h3>Home Section</h3>
+        <p>
+            <table class="stats">
+                <tr>
+                    <th colspan="3">2026</th>
+                </tr>
+                <tr>
+                    <td>4th Place</td>
+                    <td>11 Categories</td>
+                    <td>23 Points</td>
+                </tr>
+            </table>
+        </p>
+        </div>
+        <div id="about" class="tab-content">
+            <h3>2026</h3>
+            <p>
+                <table>
+                    <tr id="girder-top">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Best Picture</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Bugonia</td>
+                        <td colspan="12">F1</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td class="voted" colspan="12">Sinners</td>
+                        <td colspan="12">The Secret Agent</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actor in a Leading Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Ethan Hawke<br>(Blue Moon)</td>
+                        <td colspan="12">Leonardo DiCaprio<br>(One Battle after Another)</td>
+                        <td class="winner voted" colspan="12">Michael B. Jordan<br>(Sinners)</td>
+                        <td colspan="12">Timothée Chalamet<br>(Marty Supreme)</td>
+                        <td colspan="12">Wagner Moura<br>(The Secret Agent)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Leading Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Emma Stone<br>(Bugonia)</td>
+                        <td class="winner voted" colspan="12">Jessie Buckley<br>(Hamnet)</td>
+                        <td colspan="12">Kate Hudson<br>(Song Sung Blue)</td>
+                        <td colspan="12">Renate Reinsve<br>(Sentimental Value)</td>
+                        <td colspan="12">Rose Byrne<br>(If I Had Legs I'd Kick You)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actor in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Benicio Del Toro<br>(One Battle after Another)</td>
+                        <td colspan="12">Delroy Lindo<br>(Sinners)</td>
+                        <td colspan="12">Jacob Elordi<br>(Frankenstein)</td>
+                        <td class="winner" colspan="12">Sean Penn<br>(One Battle after Another)</td>
+                        <td colspan="12">Stellan Skarsgård<br>(Sentimental Value)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Amy Madigan<br>(Weapons)</td>
+                        <td colspan="12">Elle Fanning<br>(Sentimental Value)</td>
+                        <td colspan="12">Inga Ibsdotter Lilleaas<br>(Sentimental Value)</td>
+                        <td class="voted" colspan="12">Teyana Taylor<br>(One Battle after Another)</td>
+                        <td colspan="12">Wunmi Mosaku<br>(Sinners)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Directing</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Chloé Zhao<br>(Hamnet)</td>
+                        <td colspan="12">Joachim Trier<br>(Sentimental Value)</td>
+                        <td colspan="12">Josh Safdie<br>(Marty Supreme)</td>
+                        <td class="winner voted" colspan="12">Paul Thomas Anderson<br>(One Battle after Another)</td>
+                        <td colspan="12">Ryan Coogler<br>(Sinners)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Original Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Blue Moon</td>
+                        <td colspan="12">It Was Just an Accident</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td class="winner voted" colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Adapted Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Bugonia</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td class="voted" colspan="12">Hamnet</td>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Cinematography</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td colspan="12">One Battle after Another</td>
+                        <td class="winner voted" colspan="12">Sinners</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Film Editing</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">F1</td>
+                        <td class="voted" colspan="12">Marty Supreme</td>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Casting</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td class="voted" colspan="12">Sinners</td>
+                        <td colspan="12">The Secret Agent</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Production Design</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td colspan="12">One Battle after Another</td>
+                        <td class="voted" colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Costume Design</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Avatar: Fire and Ash</td>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td class="voted" colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Makeup and Hairstyling</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td colspan="12">Kokuho</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Smashing Machine</td>
+                        <td class="voted" colspan="12">The Ugly Stepsister</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Visual Effects</th>
+                    </tr>
+                    <tr>
+                        <td class="winner voted" colspan="12">Avatar: Fire and Ash</td>
+                        <td colspan="12">F1</td>
+                        <td colspan="12">Jurassic World Rebirth</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Lost Bus</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Sound</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">F1</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td class="voted" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">Sirāt</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Score)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Bugonia</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">One Battle after Another</td>
+                        <td class="winner voted" colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Song)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Dear Me<br>(Diane Warren: Relentless)</td>
+                        <td class="winner voted" colspan="12">Golden<br>(KPop Demon Hunters)</td>
+                        <td colspan="12">I Lied To You<br>(Sinners)</td>
+                        <td colspan="12">Sweet Dreams Of Joy<br>(Viva Verdi!)</td>
+                        <td colspan="12">Train Dreams<br>(Train Dreams)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">International Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">It Was Just an Accident</td>
+                        <td class="winner voted" colspan="12">Sentimental Value</td>
+                        <td colspan="12">Sirāt</td>
+                        <td colspan="12">The Secret Agent</td>
+                        <td colspan="12">The Voice of Hind Rajab</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Arco</td>
+                        <td colspan="12">Elio</td>
+                        <td class="winner voted" colspan="12">KPop Demon Hunters</td>
+                        <td colspan="12">Little Amélie or the Character of Rain</td>
+                        <td colspan="12"><a href="../films/zootopia-2.html">Zootopia 2</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Come See Me in the Good Light</td>
+                        <td colspan="12">Cutting through Rocks</td>
+                        <td class="winner" colspan="12">Mr. Nobody against Putin</td>
+                        <td class="voted" colspan="12">The Alabama Solution</td>
+                        <td colspan="12">The Perfect Neighbor</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Live Action Short Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12"><a href="../films/a-friend-of-dorothy.html">A Friend of Dorothy</a></td>
+                        <td colspan="12">Butcher's Stain</td>
+                        <td class="voted" colspan="12">Jane Austen's Period Drama</td>
+                        <td class="winner" colspan="12">The Singers</td>
+                        <td class="winner" colspan="12">Two People Exchanging Saliva</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Short Film</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Butterfly</td>
+                        <td colspan="12">Forevergreen</td>
+                        <td colspan="12">Retirement Plan</td>
+                        <td class="winner" colspan="12">The Girl Who Cried Pearls</td>
+                        <td colspan="12">The Three Sisters</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Short Film</th>
+                    </tr>
+                    <tr>
+                        <td class="winner voted" colspan="12">All the Empty Rooms</td>
+                        <td colspan="12">Armed Only with a Camera: The Life and Death of Brent Renaud</td>
+                        <td colspan="12">Children No More: "Were and Are Gone"</td>
+                        <td colspan="12">Perfectly a Strangeness</td>
+                        <td colspan="12">The Devil Is Busy</td>
+                    </tr>
+                    <tr id="girder-bottom">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+        <div id="contact" class="tab-content">
+            <p>
+                <table id="watched-film-list">
+                    <tr>
+                        <td class="watched-film"><a href="../films/a-friend-of-dorothy.html"><abbr title="A Friend of Dorothy"><img class="poster" src="../files/film-posters/a-friend-of-dorothy-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/all-the-empty-rooms.html"><abbr title="All the Empty Rooms"><img class="poster" src="../files/film-posters/all-the-empty-rooms-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/arco.html"><abbr title="Arco"><img class="poster" src="../files/film-posters/arco-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/armed-only-with-a-camera-the-life-and-death-of-brent-renaud.html"><abbr title="Armed Only with a Camera: The Life and Death of Brent Renaud"><img class="poster" src="../files/film-posters/armed-only-with-a-camera-the-life-and-death-of-brent-renaud-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/avatar-fire-and-ash.html"><abbr title="Avatar: Fire and Ash"><img class="poster" src="../files/film-posters/avatar-fire-and-ash-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/blue-moon.html"><abbr title="Blue Moon"><img class="poster" src="../files/film-posters/blue-moon-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/bugonia.html"><abbr title="Bugonia"><img class="poster" src="../files/film-posters/bugonia-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/butchers-stain.html"><abbr title="Butcher's Stain"><img class="poster" src="../files/film-posters/butchers-stain-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/butterfly.html"><abbr title="Butterfly"><img class="poster" src="../files/film-posters/butterfly-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/children-no-more-were-and-are-gone.html"><abbr title="Children No More: "Were and Are Gone""><img class="poster" src="../files/film-posters/children-no-more-were-and-are-gone-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/come-see-me-in-the-good-light.html"><abbr title="Come See Me in the Good Light"><img class="poster" src="../files/film-posters/come-see-me-in-the-good-light-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/cutting-through-rocks.html"><abbr title="Cutting through Rocks"><img class="poster" src="../files/film-posters/cutting-through-rocks-poster.jpg"></abbr></a></td>
+                    </tr>
+                    <tr>
+                        <td class="watched-film"><a href="../films/diane-warren-relentless.html"><abbr title="Diane Warren: Relentless"><img class="poster" src="../files/film-posters/diane-warren-relentless-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/elio.html"><abbr title="Elio"><img class="poster" src="../files/film-posters/elio-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/f1.html"><abbr title="F1"><img class="poster" src="../files/film-posters/f1-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/forevergreen.html"><abbr title="Forevergreen"><img class="poster" src="../files/film-posters/forevergreen-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/frankenstein.html"><abbr title="Frankenstein"><img class="poster" src="../files/film-posters/frankenstein-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/hamnet.html"><abbr title="Hamnet"><img class="poster" src="../files/film-posters/hamnet-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/if-i-had-legs-id-kick-you.html"><abbr title="If I Had Legs I'd Kick You"><img class="poster" src="../files/film-posters/if-i-had-legs-id-kick-you-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/it-was-just-an-accident.html"><abbr title="It Was Just an Accident"><img class="poster" src="../files/film-posters/it-was-just-an-accident-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/jane-austens-period-drama.html"><abbr title="Jane Austen's Period Drama"><img class="poster" src="../files/film-posters/jane-austens-period-drama-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/jurassic-world-rebirth.html"><abbr title="Jurassic World Rebirth"><img class="poster" src="../files/film-posters/jurassic-world-rebirth-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/kokuho.html"><abbr title="Kokuho"><img class="poster" src="../files/film-posters/kokuho-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/kpop-demon-hunters.html"><abbr title="KPop Demon Hunters"><img class="poster" src="../files/film-posters/kpop-demon-hunters-poster.jpg"></abbr></a></td>
+                    </tr>
+                    <tr>
+                        <td class="watched-film"><a href="../films/little-amelie-or-the-character-of-rain.html"><abbr title="Little Amélie or the Character of Rain"><img class="poster" src="../files/film-posters/little-amelie-or-the-character-of-rain-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/marty-supreme.html"><abbr title="Marty Supreme"><img class="poster" src="../files/film-posters/marty-supreme-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/mr-nobody-against-putin.html"><abbr title="Mr. Nobody against Putin"><img class="poster" src="../files/film-posters/mr-nobody-against-putin-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/one-battle-after-another.html"><abbr title="One Battle after Another"><img class="poster" src="../files/film-posters/one-battle-after-another-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/perfectly-a-strangeness.html"><abbr title="Perfectly a Strangeness"><img class="poster" src="../files/film-posters/perfectly-a-strangeness-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/retirement-plan.html"><abbr title="Retirement Plan"><img class="poster" src="../files/film-posters/retirement-plan-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/sentimental-value.html"><abbr title="Sentimental Value"><img class="poster" src="../files/film-posters/sentimental-value-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/sinners.html"><abbr title="Sinners"><img class="poster" src="../files/film-posters/sinners-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/sirat.html"><abbr title="Sirāt"><img class="poster" src="../files/film-posters/sirat-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/song-sung-blue.html"><abbr title="Song Sung Blue"><img class="poster" src="../files/film-posters/song-sung-blue-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/the-alabama-solution.html"><abbr title="The Alabama Solution"><img class="poster" src="../files/film-posters/the-alabama-solution-poster.jpg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/the-devil-is-busy.html"><abbr title="The Devil Is Busy"><img class="poster" src="../files/film-posters/the-devil-is-busy-poster.jpg"></abbr></a></td>
+                    </tr>
+                    <tr>
+                        <td class="watched-film"><a href="../films/zootopia.html"><abbr title="Zootopia"><img class="poster" src="../files/film-posters/zootopia-poster.jpeg"></abbr></a></td>
+                        <td class="watched-film"><a href="../films/.html"><abbr title=""><img class="poster" src="../files/film-posters/"></abbr></a></td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+    </body>
+</html>

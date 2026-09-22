@@ -1,0 +1,176 @@
+body {
+    display: grid;
+    background-color: rgb(226, 202, 64);
+    margin: 0;
+}
+header {
+    display: flex;
+    background-color: white;
+    height: 50px;
+    justify-content: space-around;
+}
+a {
+    color: black;
+    text-decoration: none;
+    text-align: center;
+}
+a:hover {
+    color: red;
+}
+table {
+    border: 8px solid rgb(0, 0, 0);
+    background-color: rgb(128, 127, 127);
+    text-align: center;
+    table-layout: fixed;
+    width: 80%;
+    margin: 3vh 10%;
+    border-radius: 10px;
+    justify-self: center;
+    font-family: sans-serif;
+}
+tr {
+    height: 4em;
+}
+th {
+    border: 1px solid black;
+    background-color: rgb(228, 178, 15);
+    font-size: 200%;
+    letter-spacing: 0.1em;
+    word-spacing: 0.25em;
+    font-weight: bold;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+}
+td {
+    border: 1px solid black;
+    background-color: white;
+    font-size: 140%;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+    position: relative;
+}
+h3 {
+    justify-self: center;
+    font-size: 200%;
+}
+.voted {
+    background-image: url('../files/vote.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 2.2em;
+}
+.winner {
+    background-color: rgb(228, 195, 105);
+}
+.header-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    outline: 2px solid black;
+    border-collapse: collapse;
+    background-color: rgb(185, 185, 185);
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 120%;
+}
+.header-links:hover {
+    background-color: rgb(231, 231, 231);
+    color: black;
+}
+.stats {
+    border: 8px solid rgb(0, 0, 0);
+    background-color: rgb(128, 127, 127);
+    text-align: center;
+    table-layout: fixed;
+    min-width: 25%;
+    max-width: fit-content;
+    margin: 3vh 10%;
+    border-radius: 10px;
+    justify-self: center;
+    font-family: sans-serif;
+}
+.watched-film {
+    border: solid 3px rgb(0, 0, 0);
+    padding: 0;
+}
+.poster {
+    min-height: 2in;
+    max-height: 2in;
+    min-width: 1.3in;
+    max-width: 1.3in;
+    display: block;
+}
+#profile-picture {
+    border: 5px solid black;
+    width: 2.5in;
+    max-height: 3.8in;
+    margin-right: 30px;
+    margin-left: 40px;
+}
+#bio {
+    display: flex;
+    flex-direction: row;
+    margin: 1em;
+        justify-content: center;
+}
+#name {
+    font-size: 300%;
+    font-weight: bold;
+}
+#girder-top {
+    height: 1em;
+}
+#girder-bottom {
+    height: 1em;
+}
+#watched-film-list {
+    table-layout: fixed;
+    justify-self: center;
+    border: none;
+    background-color: transparent;
+    width: auto;
+}
+
+/* Container for the horizontal row of tabs */
+.tab-header {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Individual tab design */
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.tab-btn:hover {
+  background-color: #f1f1f1;
+}
+
+/* Styling for the currently active tab button */
+.tab-btn.active {
+  border-bottom: 3px solid #007bff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Hide all content sections by default */
+.tab-content {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Show the active content section */
+.tab-content.active {
+  display: block;
+}
