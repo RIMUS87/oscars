@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plant finder</title>
+<style>
+/* ==================== COLORS AND SIZES ==================== */
+:root{
+  --bg:#f4f6f8; --surface:#fff; --ink:#18212b; --muted:#5c6b7a; --line:#d5dde5;
+  --accent:#0a6c74; --on-accent:#fff; --tint:#dff1f0;
+
+  /* Page and item box sizes (desktop) */
+  --page-max:1800px;        /* "none" = whole window width, or e.g. 1400px */
+  --card-min:230px;       /* narrowest an item box gets; more boxes fit per row when this is smaller */
+  --card-gap:14px;
+  --card-min-h:0px;       /* shortest / tallest an item box can be, e.g. 220px and 380px */
+  --card-max-h:none;
+  --side-img-w:120px;     /* picture width when an item uses img-left or img-right */
+  --card-radius:6px; --card-pad:16px;
+  --card-bg:var(--surface); --card-border:var(--line);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1519; --surface:#171f25; --ink:#e6edf2; --muted:#93a3b1; --line:#2a3640; --accent:#5fd0c8; --on-accent:#08211f; --tint:#183a3a}
+}
+/* Item box sizes on phones and small windows: change any of the variables above just for small screens */
+@media (max-width:640px){
+  :root{--card-min:160px; --card-gap:10px; --side-img-w:90px}
+}
+
+/* ==================== PAGE ==================== */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:var(--page-max);margin:0 auto;padding:32px 20px 64px}
+h1{margin:0;font-size:2rem;line-height:1.15;letter-spacing:-.02em}
+h2{margin:0 0 4px;font-size:1rem}
+.sub,.hint{color:var(--muted);margin:0}
+.hint{font-size:.875rem}
+.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}
+.layout.collapsed{grid-template-columns:minmax(0,1fr)}
+.layout.collapsed aside{display:none}
+@media(max-width:840px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;overflow:visible}}
+
+/* ==================== BUTTONS, INPUTS, CHIPS ==================== */
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;line-height:1.3}
+button:hover{border-color:var(--accent)}
+button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button[data-dir=asc]::after{content:" ↑"}
+button[data-dir=desc]::after{content:" ↓"}
+button.plain{border:0;background:none;padding:2px 4px;color:var(--muted);text-decoration:underline;justify-self:start}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+select:disabled{opacity:.55;cursor:not-allowed}
+.search-row{margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{display:inline-flex;align-items:center;background:var(--tint);border-radius:999px;padding:2px 4px 2px 12px;font-size:.875rem}
+.chip button{border:0;background:none;padding:0 8px;font-size:1.1rem;line-height:1.4;color:var(--muted)}
+
+/* ==================== SEARCH AND FILTER PANEL ==================== */
+aside{position:sticky;top:16px;display:grid;gap:24px;padding:2px;max-height:calc(100vh - 32px);overflow:auto}
+#sets{margin:12px 0;display:grid;gap:10px}
+.set{display:grid;gap:10px;border-left:2px solid var(--line);padding-left:14px}
+.set.multi{border-left-color:var(--accent)}
+.set>button{justify-self:start}
+.set-head,.rule-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.875rem;color:var(--muted)}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:8px}
+.pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.join{font-size:.8125rem;color:var(--muted);font-style:italic}
+.join.top{font-weight:600;color:var(--ink)}
+
+/* ==================== TOOLBAR ==================== */
+.bar{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.lead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.sorts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#counter{font-size:1.125rem}
+#count{font-size:1.5rem;font-variant-numeric:tabular-nums}
+.layout.collapsed .when-open,.layout:not(.collapsed) .when-closed{display:none}
+
+/* ==================== ITEM BOXES ==================== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--card-min),1fr));gap:var(--card-gap);margin-top:18px}
+.item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--card-radius);overflow:hidden;
+  display:flex;flex-direction:column;min-height:var(--card-min-h);max-height:var(--card-max-h);color:inherit;text-decoration:none}
+a.item:hover{border-color:var(--accent)}
+a.item:hover .link-btn{background:var(--accent);color:var(--on-accent)}
+.item.img-bottom{flex-direction:column-reverse}
+.item.img-left{flex-direction:row}
+.item.img-right{flex-direction:row-reverse}
+.body{flex:1;min-width:0;min-height:0;overflow:hidden;display:grid;gap:8px;align-content:start;padding:var(--card-pad)}
+.media{flex:none;overflow:hidden;background:var(--tint)}
+.media.missing{min-height:80px}
+.media img{display:block;width:100%;height:auto}              /* shows the whole picture at its own proportions */
+.item.img-left,.item.img-right{grid-column:span 2}   /* side-picture boxes take two columns so the text has room */
+@media(max-width:380px){.item.img-left,.item.img-right{grid-column:auto}}
+.img-left .media,.img-right .media{width:var(--side-img-w);align-self:stretch}
+.img-left .media img,.img-right .media img{height:100%;object-fit:contain}
+.line{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.title{margin:0;font-size:1.0625rem}
+.badge{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tagline{margin:0;color:var(--muted);font-size:.9375rem}
+.details{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.875rem}
+.details dt{color:var(--muted)}
+.details dd{margin:0}
+.link-btn{justify-self:start;padding:6px 14px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:.875rem}
+.item .foot{margin:0;font-size:.875rem;color:var(--muted)}
+.empty{color:var(--muted);padding:32px 0;margin:0}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <h1>Plant finder</h1>
+    <p class="sub">Search by keyword, then narrow with required filters.</p>
+  </header>
+
+  <div class="layout" id="layout">
+    <!-- ============ SEARCH AND FILTER PANEL ============ -->
+    <aside id="panel">
+      <section>
+        <h2>Search</h2>
+        <p class="hint">Results update as you type. The keyword must match exactly.</p>
+        <div class="search-row"><input id="q" type="search" placeholder="Type a keyword" aria-label="Search keyword" autocomplete="off" spellcheck="false"></div>
+      </section>
+      <section>
+        <h2>Required filters</h2>
+        <p class="hint">An item matches when it meets every requirement in at least one set. A requirement with several options is met by any one of them.</p>
+        <div id="sets"></div>
+        <button type="button" data-a="add-set">Add alternative set</button>
+      </section>
+      <button type="button" class="plain" data-a="clear">Clear search and filters</button>
+    </aside>
+
+    <main>
+      <!-- ============ COUNTER, PANEL BUTTON, SORT BUTTONS ============ -->
+      <div class="bar">
+        <div class="lead">
+          <button type="button" id="toggle" aria-expanded="true" aria-controls="panel">
+            <span class="when-open">Hide search and filters</span>
+            <span class="when-closed">Show search and filters<span id="active-note" hidden> (<span id="active-num"></span> active)</span></span>
+          </button>
+          <div id="counter" aria-live="polite"><strong id="count"></strong> of <span id="total"></span> items match</div>
+        </div>
+        <!-- Each data-sort name is defined in SORT_ORDERS in the script. Button text is yours to change. -->
+        <div class="sorts" role="group" aria-label="Sort items">
+          <span class="hint">Sort</span>
+          <button type="button" data-sort="">Original order</button>
+          <button type="button" data-sort="az">A–Z</button>
+          <button type="button" data-sort="light">Brightest light first</button>
+          <button type="button" data-sort="water">Thirstiest first</button>
+          <button type="button" data-sort="price">Price</button>
+          <button type="button" data-sort="picks">My picks first</button>
+        </div>
+      </div>
+
+      <!-- ============ ITEMS ============
+        To add an item, copy one block below and edit it. Every item needs class="item" and these data attributes:
+          data-name       used by the A–Z sort
+          data-keywords   hidden exact-match keywords for the search bar, separated by |
+          data-category, data-light, data-water, data-pet-safe   the values the filters offer (separate several with |)
+          data-price      used by the Price sort
+        (Filters and sorts are set up in the script. A new data-... attribute only becomes a filter once it is listed in FILTER_FIELDS.)
+
+        Customizing one item, all done right here:
+          Link      use <a class="item" href="page.html"> and the whole box becomes a link. Use <article> for no link.
+          Picture   add <div class="media"><img src="images/x.jpg" alt="..."></div> as the first thing inside the item.
+                    Its side: class="item img-top" (default) | img-bottom | img-left | img-right
+          Hide      delete any line (title, badge, tagline, details, link-btn, foot), or add the hidden attribute to it.
+          Restyle   add style="..." to the item or to any part, e.g. <article class="item" style="background:#fff8e1;max-height:300px">
+          New text  add <p class="tagline">...</p> or <p class="foot">...</p> inside .body.
+      -->
+      <div id="grid" class="grid">
+
+        <a class="item" href="#" style="border:2px solid var(--accent)"
+           data-name="Monstera" data-keywords="climber|large-leaf|tropical|statement" data-category="Foliage" data-light="Medium" data-water="Moderate" data-pet-safe="No" data-price="34">
+          <div class="body">
+            <div class="line"><h3 class="title">Monstera</h3><span class="badge">$34</span></div>
+            <p class="tagline">Best seller</p>
+            <dl class="details"><dt>Category</dt><dd>Foliage</dd><dt>Light</dt><dd>Medium</dd><dt>Water</dt><dd>Moderate</dd><dt>Pet-safe</dt><dd>No</dd></dl>
+            <span class="link-btn">View details</span>
+          </div>
+        </a>
+
+        <article class="item" data-name="Snake plant" data-keywords="upright|hardy|beginner|air-purifying" data-category="Succulent" data-light="Low" data-water="Low" data-pet-safe="No" data-price="22">
+          <div class="body">
+            <div class="line"><h3 class="title">Snake plant</h3><span class="badge">$22</span></div>
+            <dl class="details"><dt>Category</dt><dd>Succulent</dd><dt>Light</dt><dd>Low</dd><dt>Water</dt><dd>Low</dd><dt>Pet-safe</dt><dd>No</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Pothos" data-keywords="trailing|beginner|hardy|hanging" data-category="Trailing" data-light="Low" data-water="Moderate" data-pet-safe="No" data-price="14">
+          <div class="body">
+            <div class="line"><h3 class="title">Pothos</h3><span class="badge">$14</span></div>
+            <dl class="details"><dt>Category</dt><dd>Trailing</dd><dt>Light</dt><dd>Low</dd><dt>Water</dt><dd>Moderate</dd><dt>Pet-safe</dt><dd>No</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Spider plant" data-keywords="hanging|beginner|air-purifying|pet-friendly" data-category="Trailing" data-light="Medium" data-water="Moderate" data-pet-safe="Yes" data-price="12">
+          <div class="body">
+            <div class="line"><h3 class="title">Spider plant</h3><span class="badge">$12</span></div>
+            <dl class="details"><dt>Category</dt><dd>Trailing</dd><dt>Light</dt><dd>Medium</dd><dt>Water</dt><dd>Moderate</dd><dt>Pet-safe</dt><dd>Yes</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Aloe vera" data-keywords="medicinal|beginner|desert|compact" data-category="Succulent" data-light="Bright" data-water="Low" data-pet-safe="No" data-price="16">
+          <div class="body">
+            <div class="line"><h3 class="title">Aloe vera</h3><span class="badge">$16</span></div>
+            <dl class="details"><dt>Category</dt><dd>Succulent</dd><dt>Light</dt><dd>Bright</dd><dt>Water</dt><dd>Low</dd><dt>Pet-safe</dt><dd>No</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Boston fern" data-keywords="hanging|humid|pet-friendly|feathery" data-category="Fern" data-light="Medium" data-water="High" data-pet-safe="Yes" data-price="20">
+          <div class="body">
+            <div class="line"><h3 class="title">Boston fern</h3><span class="badge">$20</span></div>
+            <dl class="details"><dt>Category</dt><dd>Fern</dd><dt>Light</dt><dd>Medium</dd><dt>Water</dt><dd>High</dd><dt>Pet-safe</dt><dd>Yes</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Parlor palm" data-keywords="upright|shade|pet-friendly|tropical" data-category="Palm" data-light="Low" data-water="Moderate" data-pet-safe="Yes" data-price="28">
+          <div class="body">
+            <div class="line"><h3 class="title">Parlor palm</h3><span class="badge">$28</span></div>
+            <dl class="details"><dt>Category</dt><dd>Palm</dd><dt>Light</dt><dd>Low</dd><dt>Water</dt><dd>Moderate</dd><dt>Pet-safe</dt><dd>Yes</dd></dl>
+          </div>
+        </article>
+
+        <article class="item" data-name="Calathea" data-keywords="patterned|humid|tropical|fussy" data-category="Foliage" data-light="Medium" data-water="High" data-pet-safe="Yes" data-price="24">
+          <div class="body">
+            <div class="line"><h3 class="title">Calathea</h3><span class="badge">$24</span></div>
+            <dl class="details"><dt>Category</dt><dd>Foliage</dd><dt>Light</dt><dd>Medium</dd><dt>Water</dt><dd>High</dd><dt>Pet-safe</dt><dd>Yes</dd></dl>
+          </div>
+        </article>
+
+        <a class="item" href="films/kpop-demon-hunters.html" data-name="KPop Demon Hunters" data-keywords="kpop|demon|hunters|kpop demon hunters" data-year="2026">
+          <div class="body">
+            <div class="media"><img src="files/film-posters/kpop-demon-hunters-poster.jpg" alt="..."></div>
+            <div class="line"><h3 class="title">KPop Demon Hunters</h3></div>
+            <dl class="details"></dl>
+          </div>
+        </a>
+
+      </div>
+
+      <p id="prompt" class="empty" hidden>Type a keyword or add a filter to see items.</p>
+      <p id="empty" class="empty" hidden>No items match every criterion. Remove a requirement or search term to see more.</p>
+    </main>
+  </div>
+</div>
+
+<!-- ============ PIECES THE SCRIPT BUILDS AS FILTERS ARE ADDED. Style them with the CSS above. ============ -->
+<template id="tpl-set">
+  <div class="set">
+    <div class="set-head"><span>Meets all of these</span><button type="button" class="plain" data-a="rm-set">Remove set</button></div>
+    <div class="rules"></div>
+    <button type="button" data-a="add-rule">Add requirement</button>
+  </div>
+</template>
+<template id="tpl-rule">
+  <div class="rule">
+    <div class="rule-head"><span class="rule-title" data-one="Required" data-many="Any one of these"></span><button type="button" class="plain" data-a="rm-rule">Remove</button></div>
+    <div class="chips"></div>
+    <div class="pickers">
+      <select class="field-sel" aria-label="Filter category"><option value="">Filter by…</option></select>
+      <select class="value-sel" aria-label="Filter option" data-first="Select…" data-more="Or add…"><option value="">Select…</option></select>
+    </div>
+  </div>
+</template>
+<template id="tpl-chip"><span class="chip"><span class="chip-text"></span><button type="button" data-a="rm-pick">×</button></span></template>
+<template id="tpl-and"><div class="join">and</div></template>
+<template id="tpl-or"><div class="join top">or</div></template>
+<template id="tpl-pickor"><span class="join">or</span></template>
+
+<script>
+/* ==================== SETTINGS ==================== */
+
+// Show every item before any keyword or filter is entered? false = start with an empty grid.
+const SHOW_ALL_ITEMS_AT_START = true;
+// Start with the search and filter panel folded away?
+const START_COLLAPSED = false;
+
+// Filter drop-downs. `key` is the data attribute on the items (data-light -> "light").
+// `order` (optional) sets the order of that drop-down's values; unlisted values follow, A-Z.
+const FILTER_FIELDS = [
+  { key: "category", label: "Category", order: ["Foliage", "Trailing", "Succulent", "Fern", "Palm", "Tree", "Flowering"] },
+  { key: "light",    label: "Light",    order: ["Bright", "Medium", "Low"] },
+  { key: "water",    label: "Water",    order: ["Low", "Moderate", "High"] },
+  { key: "pet-safe", label: "Pet-safe", order: ["Yes", "No"] },
+  { key: "year", label: "Year", order: ["2026", "2025"] }
+];
+
+// Sort orders, matched to the data-sort names on the buttons. Items are sorted by their `key` data attribute.
+// With `order`, values are ranked by their place in the list (unlisted values go last); without it, A-Z or low-to-high.
+// Clicking the active button reverses it.
+const SORT_ORDERS = {
+  az:    { key: "name" },
+  light: { key: "light", order: ["Bright", "Medium", "Low"] },
+  water: { key: "water", order: ["High", "Moderate", "Low"] },
+  price: { key: "price" },
+  picks: { key: "name",  order: ["Monstera", "Pothos", "Calathea", "Snake plant"] }
+};
+
+/* ==================== BEHAVIOR (no edits needed) ==================== */
+
+const $ = s => document.querySelector(s);
+const norm = s => String(s).trim().toLowerCase();
+const split = v => (v || "").split("|").map(x => x.trim()).filter(Boolean);
+const tpl = id => document.getElementById(id).content.cloneNode(true);
+const labelOf = key => FILTER_FIELDS.find(f => f.key === key).label;
+const attr = (el, key) => split(el.getAttribute("data-" + key));
+
+const grid = $("#grid"), q = $("#q");
+const ITEMS = [...grid.querySelectorAll(":scope > .item")].map(el => ({
+  el,
+  kws: attr(el, "keywords").map(norm),
+  vals: Object.fromEntries(FILTER_FIELDS.map(f => [f.key, attr(el, f.key).map(norm)]))
+}));
+
+const rankIn = (order = [], v) => { const i = order.map(norm).indexOf(norm(v)); return i < 0 ? Infinity : i; };
+const OPTIONS = FILTER_FIELDS.map(f => ({
+  ...f,
+  values: [...new Set(ITEMS.flatMap(it => attr(it.el, f.key)))].sort((a, b) => {
+    const x = rankIn(f.order, a), y = rankIn(f.order, b);
+    return x === y ? a.localeCompare(b, undefined, { numeric: true }) : x < y ? -1 : 1;
+  })
+}));
+
+// term: the search keyword. sets: alternative groups. Each set holds requirements ("rules") and each rule holds picks {key, value}.
+//   A rule passes if ANY of its picks match. A set passes if EVERY rule in it passes.
+//   An item matches if ANY set passes (sets with no picks are ignored).
+const state = { collapsed: START_COLLAPSED, term: "", sets: [{ id: 0, rules: [] }], sort: "", desc: false };
+let nextId = 1;
+const findSet = id => state.sets.find(g => g.id === id);
+const findRule = id => state.sets.flatMap(g => g.rules).find(r => r.id === id);
+
+function ruleNode(r) {
+  const n = tpl("tpl-rule");
+  const title = n.querySelector(".rule-title");
+  title.textContent = r.picks.length > 1 ? title.dataset.many : title.dataset.one;
+  n.querySelector('[data-a="rm-rule"]').dataset.r = r.id;
+  const chips = n.querySelector(".chips");
+  r.picks.forEach((p, pi) => {
+    if (pi) chips.append(tpl("tpl-pickor"));
+    const c = tpl("tpl-chip");
+    c.querySelector(".chip-text").textContent = `${labelOf(p.key)}: ${p.value}`;
+    const b = c.querySelector("button");
+    b.dataset.r = r.id; b.dataset.i = pi; b.setAttribute("aria-label", "Remove " + p.value);
+    chips.append(c);
+  });
+  chips.hidden = !r.picks.length;
+  const fs = n.querySelector(".field-sel"), vs = n.querySelector(".value-sel");
+  fs.dataset.r = vs.dataset.r = r.id; fs.dataset.s = "field"; vs.dataset.s = "value";
+  OPTIONS.forEach(f => fs.add(new Option(f.label, f.key, false, f.key === r.field)));
+  const cur = OPTIONS.find(f => f.key === r.field);
+  vs.disabled = !cur;
+  vs.options[0].textContent = r.picks.length ? vs.dataset.more : vs.dataset.first;
+  if (cur) cur.values.forEach(v => {
+    const o = new Option(v, v);
+    o.disabled = r.picks.some(p => p.key === cur.key && norm(p.value) === norm(v));
+    vs.add(o);
+  });
+  return n;
+}
+
+function renderSets(focusRule, which = "field") {
+  const box = $("#sets");
+  box.replaceChildren();
+  const multi = state.sets.length > 1;
+  state.sets.forEach((g, gi) => {
+    if (gi) box.append(tpl("tpl-or"));
+    const n = tpl("tpl-set");
+    n.querySelector(".set").classList.toggle("multi", multi);
+    n.querySelector(".set-head").hidden = !multi;
+    n.querySelector('[data-a="rm-set"]').dataset.g = g.id;
+    n.querySelector('[data-a="add-rule"]').dataset.g = g.id;
+    const rules = n.querySelector(".rules");
+    g.rules.forEach((r, ri) => { if (ri) rules.append(tpl("tpl-and")); rules.append(ruleNode(r)); });
+    box.append(n);
+  });
+  if (focusRule) box.querySelector(`select[data-r="${focusRule}"][data-s="${which}"]`)?.focus();
+}
+
+function sorted() {
+  const s = SORT_ORDERS[state.sort];
+  if (!s) return ITEMS;
+  const val = it => attr(it.el, s.key)[0] ?? "";
+  const key = it => s.order ? rankIn(s.order, val(it)) : val(it);
+  const dir = state.desc ? -1 : 1;
+  return [...ITEMS].sort((a, b) => {
+    const x = key(a), y = key(b);
+    if (x === y) return 0;
+    const numeric = typeof x === "number" || (x !== "" && y !== "" && !isNaN(x) && !isNaN(y));
+    const r = numeric ? (Number(x) < Number(y) ? -1 : 1) : String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: "base" });
+    return r * dir;
+  });
+}
+
+function update() {
+  const sets = state.sets.map(g => g.rules.filter(r => r.picks.length)).filter(g => g.length);
+  const term = norm(state.term);
+  const hold = !SHOW_ALL_ITEMS_AT_START && !term && !sets.length;   // no criteria yet, and the grid should stay empty
+  let shown = 0;
+  sorted().forEach(it => {
+    const ok = !hold
+      && (!term || it.kws.includes(term))
+      && (!sets.length || sets.some(g => g.every(r => r.picks.some(p => it.vals[p.key].includes(norm(p.value))))));
+    it.el.hidden = !ok;
+    shown += ok;
+    grid.append(it.el);   // re-appending puts the item in the sorted position
+  });
+  $("#count").textContent = shown;
+  $("#total").textContent = ITEMS.length;
+  $("#prompt").hidden = !hold;
+  $("#empty").hidden = hold || shown > 0;
+
+  document.querySelectorAll("[data-sort]").forEach(b => {
+    const on = b.dataset.sort === state.sort;
+    b.setAttribute("aria-pressed", on);
+    b.dataset.dir = on && state.sort ? (state.desc ? "desc" : "asc") : "";
+  });
+  const active = (term ? 1 : 0) + sets.reduce((n, g) => n + g.length, 0);
+  $("#layout").classList.toggle("collapsed", state.collapsed);
+  $("#toggle").setAttribute("aria-expanded", !state.collapsed);
+  $("#active-num").textContent = active;
+  $("#active-note").hidden = !active;
+}
+
+q.addEventListener("input", () => { state.term = q.value; update(); });
+
+document.addEventListener("click", e => {
+  const sortBtn = e.target.closest("[data-sort]");
+  if (sortBtn) {
+    const k = sortBtn.dataset.sort;
+    state.desc = k !== "" && k === state.sort ? !state.desc : false;
+    state.sort = k;
+    return update();
+  }
+  if (e.target.closest("#toggle")) { state.collapsed = !state.collapsed; return update(); }
+  const b = e.target.closest("button[data-a]");
+  if (!b) return;
+  const { a, i, r, g } = b.dataset;
+  if (a === "add-rule") {
+    const id = nextId++;
+    findSet(+g).rules.push({ id, field: "", picks: [] });
+    renderSets(id); return update();
+  }
+  if (a === "add-set") {
+    const id = nextId++;
+    state.sets.push({ id: nextId++, rules: [{ id, field: "", picks: [] }] });
+    renderSets(id); return update();
+  }
+  if (a === "rm-set") state.sets = state.sets.filter(x => x.id !== +g);
+  else if (a === "rm-rule") state.sets.forEach(x => { x.rules = x.rules.filter(y => y.id !== +r); });
+  else if (a === "rm-pick") findRule(+r).picks.splice(+i, 1);
+  else if (a === "clear") { q.value = ""; state.term = ""; state.sets = [{ id: nextId++, rules: [] }]; }
+  renderSets(); update();
+});
+
+document.addEventListener("change", e => {
+  const sel = e.target.closest("select[data-r]");
+  if (!sel) return;
+  const rule = findRule(+sel.dataset.r);
+  if (sel.dataset.s === "field") { rule.field = sel.value; renderSets(rule.id, "value"); return; }
+  if (!sel.value) return;
+  rule.picks.push({ key: rule.field, value: sel.value });
+  renderSets(rule.id, "value"); update();
+});
+
+// A picture that fails to load is replaced by a plain tinted block instead of a broken-image icon.
+grid.addEventListener("error", e => {
+  if (e.target.tagName === "IMG") { e.target.parentNode.classList.add("missing"); e.target.remove(); }
+}, true);
+
+state.term = q.value;
+renderSets();
+update();
+</script>
+</body>
+</html>
