@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search & Filter</title>
+    <link rel="icon" href="files/trilobite.png" sizes="348x348" type="image/png">
+    <style>
+    /* Colors live here - change these to match your site. */
+    :root{
+      --bg:#f4f6f8; --surface:#fff; --ink:#18212b; --muted:#5c6b7a; --line:#d5dde5;
+      --accent:#0a6c74; --on-accent:#fff; --tint:#dff1f0;
+    }
+    @media (prefers-color-scheme:dark){
+      :root{--bg:#0f1519; --surface:#171f25; --ink:#e6edf2; --muted:#93a3b1; --line:#2a3640; --accent:#5fd0c8; --on-accent:#08211f; --tint:#183a3a}
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    .wrap{max-width:1120px;margin:0 auto;padding:32px 20px 64px}
+    h1{margin:0;font-size:2rem;line-height:1.15;letter-spacing:-.02em}
+    h2{margin:0 0 4px;font-size:1rem}
+    .sub,.hint{color:var(--muted);margin:0}
+    .hint{font-size:.875rem}
+    .layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}
+    aside{position:sticky;top:16px;display:grid;gap:24px;padding:2px;max-height:calc(100vh - 32px);overflow:auto}
+    @media(max-width:840px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;overflow:visible}}
+
+    button,input,select{font:inherit;color:inherit}
+    button{cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;line-height:1.3}
+    button:hover{border-color:var(--accent)}
+    button[aria-pressed=true],button.solid{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+    button.plain{border:0;background:none;padding:2px 4px;color:var(--muted);text-decoration:underline;justify-self:start}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    input,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+    .row{display:flex;gap:8px;margin-top:10px}
+    .row input{flex:1}
+
+    .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .chip{display:inline-flex;align-items:center;background:var(--tint);border:1px solid transparent;border-radius:999px;padding:2px 4px 2px 12px;font-size:.875rem}
+    .chip button{border:0;background:none;padding:0 8px;font-size:1.1rem;line-height:1.4;color:var(--muted)}
+
+    #rules{margin:12px 0;display:grid;gap:10px}
+    .set{display:grid;gap:10px;border-left:2px solid var(--line);padding-left:14px}
+    .set.multi{border-left-color:var(--accent)}
+    .set>button{justify-self:start}
+    .set-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.875rem;color:var(--muted)}
+    .join.top{font-weight:600;color:var(--ink)}
+    .rule{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:8px}
+    .rule-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.875rem;color:var(--muted)}
+    .join{font-size:.8125rem;color:var(--muted);font-style:italic}
+    .pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    select:disabled{opacity:.55;cursor:not-allowed}
+
+    .bar{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+    #count{font-size:1.125rem}
+    #count strong{font-size:1.5rem;font-variant-numeric:tabular-nums}
+    .sorts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:18px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:10px;align-content:start}
+    .card header{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+    .card h3{margin:0;font-size:1.0625rem}
+    .price{color:var(--muted);font-variant-numeric:tabular-nums}
+    dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.875rem}
+    dt{color:var(--muted)}
+    dd{margin:0}
+    .empty{grid-column:1/-1;color:var(--muted);padding:32px 0;margin:0}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Search & Filter</h1>
+        <p class="sub">Search by keyword, then narrow with required filters.</p>
+      </header>
+      <div class="layout">
+        <aside>
+          <section>
+            <h2>Search</h2>
+            <p class="hint">Results update as you type. The keyword must match exactly.</p>
+            <div class="row"><input id="q" type="search" placeholder="Type a keyword" aria-label="Search keyword" autocomplete="off" spellcheck="false"></div>
+          </section>
+          <section>
+            <h2>Required filters</h2>
+            <p class="hint">An item matches when it meets every requirement in at least one set. A requirement with several options is met by any one of them.</p>
+            <div id="rules"></div>
+            <button type="button" data-a="add-set">Add alternative set</button>
+          </section>
+          <button type="button" class="plain" data-a="clear">Clear search and filters</button>
+        </aside>
+        <main>
+          <div class="bar">
+            <div id="count" aria-live="polite"></div>
+            <div class="sorts" id="sorts" role="group" aria-label="Sort items"></div>
+          </div>
+          <div id="grid" class="grid"></div>
+        </main>
+      </div>
+    </div>
+    <script>
+    /* ================= CONFIG: edit this block ================= */
+
+    // Item properties offered as filter options. Values can be a string or an array of strings.
+    const FILTER_FIELDS = [
+      { key: "category", label: "Category" },
+      { key: "light",    label: "Light" },
+      { key: "water",    label: "Water" },
+      { key: "petSafe",  label: "Pet-safe" },
+      { key: "year", label: "Year"},
+      { key: "nominated-category", label: "Nominated Category"}
+    ];
+
+    // One button per entry. Items are sorted by the position of their `key` value in `order`.
+    // Values missing from `order` go last. Leave `order` out for plain A-Z / low-to-high sorting.
+    // Clicking an active button reverses it.
+    const SORT_ORDERS = [
+      { label: "A–Z",                   key: "name" },
+      { label: "Brightest light first", key: "light", order: ["Bright", "Medium", "Low"] },
+      { label: "Thirstiest first",      key: "water", order: ["High", "Moderate", "Low"] },
+      { label: "Price",                 key: "price" },
+      { label: "My picks first",        key: "name",  order: ["Monstera", "Pothos", "Calathea", "Snake plant"] }
+    ];
+
+    // Your items. `keywords` is a hidden exact-match set: the search bar matches against it,
+    // but it is never shown on the page. Add as many per item as you like.
+    const ITEMS = [
+      { name: "Monstera",         category: "Foliage",   light: "Medium", water: "Moderate", petSafe: "No",  price: 34, keywords: ["climber", "large-leaf", "tropical", "statement"] },
+      { name: "Snake plant",      category: "Succulent", light: "Low",    water: "Low",      petSafe: "No",  price: 22, keywords: ["upright", "hardy", "beginner", "air-purifying"] },
+      { name: "Pothos",           category: "Trailing",  light: "Low",    water: "Moderate", petSafe: "No",  price: 14, keywords: ["trailing", "beginner", "hardy", "hanging"] },
+      { name: "Fiddle leaf fig",  category: ["Tree", "Fern"],      light: "Bright", water: "Moderate", petSafe: "No",  price: 48, keywords: ["large-leaf", "statement", "tree", "fussy"] },
+      { name: "Spider plant",     category: "Trailing",  light: "Medium", water: "Moderate", petSafe: "Yes", price: 12, keywords: ["hanging", "beginner", "air-purifying", "pet-friendly"] },
+      { name: "Aloe vera",        category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 16, keywords: ["medicinal", "beginner", "desert", "compact"] },
+      { name: "Boston fern",      category: "Fern",      light: "Medium", water: "High",     petSafe: "Yes", price: 20, keywords: ["hanging", "humid", "pet-friendly", "feathery"] },
+      { name: "Peace lily",       category: "Flowering", light: "Low",    water: "Moderate", petSafe: "No",  price: 26, keywords: ["flowering", "air-purifying", "shade", "beginner"] },
+      { name: "Parlor palm",      category: "Palm",      light: "Low",    water: "Moderate", petSafe: "Yes", price: 28, keywords: ["upright", "shade", "pet-friendly", "tropical"] },
+      { name: "Jade plant",       category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 18, keywords: ["desert", "compact", "long-lived", "beginner"] },
+      { name: "Calathea",         category: "Foliage",   light: "Medium", water: "High",     petSafe: "Yes", price: 24, keywords: ["patterned", "humid", "tropical", "fussy"] },
+      { name: "String of pearls", category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 19, keywords: ["trailing", "hanging", "desert", "fussy"] }
+    ];
+
+    /* ================= APP: no edits needed below ================= */
+
+    const $ = s => document.querySelector(s);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const norm = s => String(s).trim().toLowerCase();
+    const list = v => (Array.isArray(v) ? v : [v]).filter(x => x != null);
+    const labelOf = key => FILTER_FIELDS.find(f => f.key === key).label;
+
+    const OPTIONS = FILTER_FIELDS.map(f => ({ ...f, values: [...new Set(ITEMS.flatMap(i => list(i[f.key])))].sort() }));
+
+    // term: the search keyword.
+    // sets: alternative groups. Each set holds requirements ("rules") and each rule holds picks {key, value}.
+    //   A rule passes if ANY of its picks match. A set passes if EVERY rule in it passes.
+    //   An item matches if ANY set passes (sets with no picks are ignored).
+    const state = { term: "", sets: [{ id: 0, rules: [] }], sort: -1, desc: false };
+    let nextId = 1;
+    const findSet = id => state.sets.find(g => g.id === id);
+    const findRule = id => state.sets.flatMap(g => g.rules).find(r => r.id === id);
+    const activeSets = () => state.sets.map(g => g.rules.filter(r => r.picks.length)).filter(g => g.length);
+
+    const passes = (item, r) => r.picks.some(p => list(item[p.key]).some(v => norm(v) === norm(p.value)));
+
+    function matches(item, sets) {
+      const kws = item.keywords.map(norm);
+      if (state.term && !kws.includes(norm(state.term))) return false;
+      return !sets.length || sets.some(g => g.every(r => passes(item, r)));
+    }
+
+    function sortItems(items) {
+      const s = SORT_ORDERS[state.sort];
+      if (!s) return items;
+      const order = s.order && s.order.map(norm);
+      const val = it => {
+        const v = list(it[s.key])[0];
+        if (order) { const i = order.indexOf(norm(v ?? "")); return i < 0 ? Infinity : i; }
+        return v ?? "";
+      };
+      const dir = state.desc ? -1 : 1;
+      return [...items].sort((a, b) => {
+        const x = val(a), y = val(b);
+        if (x === y) return 0;
+        const r = typeof x === "number" && typeof y === "number"
+          ? (x < y ? -1 : 1)
+          : String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: "base" });
+        return r * dir;
+      });
+    }
+
+    function render(focusRule, which = "field") {
+      const ruleHtml = r => {
+        const chips = r.picks.map((p, pi) =>
+          `${pi ? '<span class="join">or</span>' : ""}<span class="chip">${esc(labelOf(p.key))}: ${esc(p.value)}<button type="button" data-a="rm-pick" data-r="${r.id}" data-i="${pi}" aria-label="Remove ${esc(p.value)}">×</button></span>`).join("");
+        const cur = OPTIONS.find(f => f.key === r.field);
+        const fieldSel = `<select data-r="${r.id}" data-s="field" aria-label="Filter category"><option value="">Filter by…</option>${OPTIONS.map(f => `<option value="${esc(f.key)}"${f.key === r.field ? " selected" : ""}>${esc(f.label)}</option>`).join("")}</select>`;
+        const valueSel = `<select data-r="${r.id}" data-s="value" aria-label="${cur ? esc(cur.label) + " option" : "Filter option"}"${cur ? "" : " disabled"}><option value="">${r.picks.length ? "Or add…" : "Select…"}</option>${cur ? cur.values.map(v => `<option value="${esc(v)}"${r.picks.some(p => p.key === cur.key && norm(p.value) === norm(v)) ? " disabled" : ""}>${esc(v)}</option>`).join("") : ""}</select>`;
+        return `<div class="rule">
+            <div class="rule-head"><span>${r.picks.length > 1 ? "Any one of these" : "Required"}</span><button type="button" class="plain" data-a="rm-rule" data-r="${r.id}">Remove</button></div>
+            ${chips ? `<div class="chips">${chips}</div>` : ""}
+            <div class="pickers">${fieldSel}${valueSel}</div>
+          </div>`;
+      };
+
+      const multi = state.sets.length > 1;
+      $("#rules").innerHTML = state.sets.map((g, gi) => `${gi ? '<div class="join top">or</div>' : ""}
+        <div class="set${multi ? " multi" : ""}">
+          ${multi ? `<div class="set-head"><span>Meets all of these</span><button type="button" class="plain" data-a="rm-set" data-g="${g.id}">Remove set</button></div>` : ""}
+          ${g.rules.map((r, ri) => (ri ? '<div class="join">and</div>' : "") + ruleHtml(r)).join("")}
+          <button type="button" data-a="add-rule" data-g="${g.id}">Add requirement</button>
+        </div>`).join("");
+
+      const sets = activeSets();
+      const shown = sortItems(ITEMS.filter(it => matches(it, sets)));
+      $("#count").innerHTML = `<strong>${shown.length}</strong> of ${ITEMS.length} items match`;
+
+      const btn = (i, text) => `<button type="button" data-a="sort" data-i="${i}" aria-pressed="${state.sort === i}">${esc(text)}${state.sort === i && i >= 0 ? (state.desc ? " ↓" : " ↑") : ""}</button>`;
+      $("#sorts").innerHTML = `<span class="hint">Sort</span>` + btn(-1, "Original order") + SORT_ORDERS.map((s, i) => btn(i, s.label)).join("");
+
+      $("#grid").innerHTML = shown.length ? shown.map(it => `
+        <article class="card">
+          <header><h3>${esc(it.name)}</h3>${it.price != null ? `<span class="price">$${esc(it.price)}</span>` : ""}</header>
+          <dl>${FILTER_FIELDS.map(f => `<dt>${esc(f.label)}</dt><dd>${esc(list(it[f.key]).join(", "))}</dd>`).join("")}</dl>
+        </article>`).join("")
+        : `<p class="empty">No items match every criterion. Remove a requirement or search term to see more.</p>`;
+
+      if (focusRule) $(`select[data-r="${focusRule}"][data-s="${which}"]`)?.focus();
+    }
+
+    // Live search: every keystroke re-runs the filter. One exact keyword at a time.
+    const q = $("#q");
+    const readTerm = () => q.value.trim().replace(/\s+/g, " ");
+    q.addEventListener("input", () => { state.term = readTerm(); render(); });
+
+    document.addEventListener("click", e => {
+      const b = e.target.closest("button[data-a]");
+      if (!b) return;
+      const { a, i, r, g } = b.dataset;
+      if (a === "add-rule") { const id = nextId++; findSet(+g).rules.push({ id, field: "", picks: [] }); return render(id); }
+      else if (a === "add-set") { const id = nextId++; state.sets.push({ id: nextId++, rules: [{ id, field: "", picks: [] }] }); return render(id); }
+      else if (a === "rm-set") state.sets = state.sets.filter(x => x.id !== +g);
+      else if (a === "rm-rule") state.sets.forEach(x => { x.rules = x.rules.filter(y => y.id !== +r); });
+      else if (a === "rm-pick") findRule(+r).picks.splice(+i, 1);
+      else if (a === "sort") { const n = +i; state.desc = n >= 0 && n === state.sort ? !state.desc : false; state.sort = n; }
+      else if (a === "clear") { q.value = ""; state.term = ""; state.sets = [{ id: nextId++, rules: [] }]; }
+      render();
+    });
+
+    document.addEventListener("change", e => {
+      const sel = e.target.closest("select[data-r]");
+      if (!sel) return;
+      const rule = findRule(+sel.dataset.r);
+      if (sel.dataset.s === "field") { rule.field = sel.value; return render(rule.id, "value"); }
+      if (!sel.value) return;
+      rule.picks.push({ key: rule.field, value: sel.value });
+      render(rule.id, "value");
+    });
+
+    state.term = readTerm();
+    render();
+    </script>
+  </body>
+</html>

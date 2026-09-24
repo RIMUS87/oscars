@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exact Keyword Search Engine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 700px;
+        }
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+        }
+        .search-box:focus {
+            border-color: #10b981;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+        }
+        .results-list {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .item-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.15s ease;
+        }
+        .item-card:hover {
+            transform: translateY(-2px);
+        }
+        .item-title {
+            margin: 0 0 6px 0;
+            font-size: 18px;
+            color: #10b981;
+        }
+        .item-desc {
+            margin: 0;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-container">
+    <h1>Exact Keyword Search Engine</h1>
+    <p class="subtitle">Type an <strong>exact</strong> keyword: <strong>fitness</strong>, <strong>audio</strong>, <strong>kitchen</strong>, <strong>power</strong>, or <strong>travel</strong></p>
+    
+    <input type="text" id="keywordSearch" class="search-box" placeholder="Type an exact keyword to trigger live filter..." oninput="executeSearch()">
+    
+    <div id="resultsWrapper" class="results-list">
+        <!-- Results populate here -->
+    </div>
+</div>
+
+<script>
+    const itemsCatalog = [
+        { 
+            name: "Product Alpha", 
+            description: "High performance wearable unit built for daily optimization metrics.", 
+            keywords: ["fitness", "gym", "watch", "heartrate", "tracker", "run", "health"] 
+        },
+        { 
+            name: "Product Beta", 
+            description: "Acoustic enclosure with dense bass delivery profiles and isolated frequency drivers.", 
+            keywords: ["audio", "sound", "speaker", "music", "bluetooth", "party", "loud"] 
+        },
+        { 
+            name: "Product Gamma", 
+            description: "Precision thermal heating chamber with modular mechanical rotating blades.", 
+            keywords: ["kitchen", "cooking", "blender", "food", "chef", "smoothie", "appliance"] 
+        },
+        { 
+            name: "Product Delta", 
+            description: "High-capacity lithium electrolyte core with power step-down conversion arrays.", 
+            keywords: ["power", "battery", "charger", "backup", "phone", "travel", "juice"] 
+        },
+        { 
+            name: "Product Epsilon", 
+            description: "Waterproof synthetic textile compartment designed for rapid load distribution.", 
+            keywords: ["travel", "bag", "backpack", "luggage", "hiking", "outdoor", "camping"] 
+        }
+    ];
+
+    function executeSearch() {
+        const query = document.getElementById('keywordSearch').value.toLowerCase().trim();
+        const resultsWrapper = document.getElementById('resultsWrapper');
+        
+        resultsWrapper.innerHTML = '';
+
+        // Leave interface clean if field is empty
+        if (query === "") {
+            return;
+        }
+
+        // Evaluates if the exact query string exists anywhere within the item's keywords list
+        const matchingItems = itemsCatalog.filter(item => {
+            return item.keywords.includes(query);
+        });
+
+        // Fallback display check
+        if (matchingItems.length === 0) {
+            resultsWrapper.innerHTML = '<div class="no-results">No indices match that exact keyword. Partial matches are disabled.</div>';
+            return;
+        }
+
+        // Render matching rows to DOM
+        matchingItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <h3 class="item-title">${item.name}</h3>
+                <p class="item-desc">${item.description}</p>
+            `;
+            resultsWrapper.appendChild(card);
+        });
+    }
+
+    // Initialize clean view state
+    executeSearch();
+</script>
+
+</body>
+</html>

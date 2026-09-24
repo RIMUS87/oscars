@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search & Filter (AND/OR Logic)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        .main-content {
+            flex: 3;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        .filter-group h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .checkbox-label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        .logic-toggle {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #eef2f7;
+            border-radius: 4px;
+        }
+        .logic-toggle label {
+            margin-right: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Sidebar Filters -->
+    <aside class="sidebar">
+        <h2>Filters</h2>
+        
+        <!-- AND / OR Logic Selector -->
+        <div class="logic-toggle">
+            <p style="margin: 0 0 8px 0; font-size: 14px; color: #666;">Filter Logic:</p>
+            <label>
+                <input type="radio" name="logic" value="OR" checked onchange="filterItems()"> OR (Any)
+            </label>
+            <label>
+                <input type="radio" name="logic" value="AND" onchange="filterItems()"> AND (All)
+            </label>
+        </div>
+
+        <!-- Tags/Conditions Group -->
+        <div class="filter-group">
+            <h3>Features</h3>
+            <label class="checkbox-label">
+                <input type="checkbox" class="filter-checkbox" value="Wireless" onchange="filterItems()"> Wireless
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="filter-checkbox" value="Waterproof" onchange="filterItems()"> Waterproof
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="filter-checkbox" value="Noise-Canceling" onchange="filterItems()"> Noise-Canceling
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="filter-checkbox" value="Portable" onchange="filterItems()"> Portable
+            </label>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search by item name..." oninput="filterItems()">
+        
+        <div id="resultsGrid" class="results-grid">
+            <!-- Items injected by JavaScript -->
+        </div>
+    </main>
+</div>
+
+<script>
+    // Sample Data Source
+    const items = [
+        { name: "Premium Headphones", tags: ["Wireless", "Noise-Canceling"] },
+        { name: "Sport Earbuds", tags: ["Wireless", "Waterproof"] },
+        { name: "Bluetooth Speaker", tags: ["Wireless", "Portable", "Waterproof"] },
+        { name: "Studio Microphone", tags: ["Noise-Canceling"] },
+        { name: "Travel Power Bank", tags: ["Portable"] },
+        { name: "Smart Watch", tags: ["Wireless", "Waterproof", "Portable"] }
+    ];
+
+    function filterItems() {
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+        const selectedLogic = document.querySelector('input[name="logic"]:checked').value;
+        
+        // Get all checked checkbox values
+        const checkedBoxes = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
+                                  .map(cb => cb.value);
+
+        const filteredItems = items.filter(item => {
+            // 1. Text Search Filter
+            const matchesSearch = item.name.toLowerCase().includes(searchQuery);
+            if (!matchesSearch) return false;
+
+            // 2. Checkbox Logic Filter
+            if (checkedBoxes.length === 0) return true; // If no boxes checked, show everything matching text
+
+            if (selectedLogic === 'AND') {
+                // ALL selected tags must be present on the item
+                return checkedBoxes.every(tag => item.tags.includes(tag));
+            } else {
+                // AT LEAST ONE selected tag must be present on the item
+                return checkedBoxes.some(tag => item.tags.includes(tag));
+            }
+        });
+
+        renderResults(filteredItems);
+    }
+
+    function renderResults(itemsToRender) {
+        const grid = document.getElementById('resultsGrid');
+        grid.innerHTML = '';
+
+        if (itemsToRender.length === 0) {
+            grid.innerHTML = '<div class="no-results">No items found matching your criteria.</div>';
+            return;
+        }
+
+        itemsToRender.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const tagsHTML = item.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            card.innerHTML = `
+                <h4>${item.name}</h4>
+                <div>${tagsHTML}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Initial render
+    filterItems();
+</script>
+
+</body>
+</html>

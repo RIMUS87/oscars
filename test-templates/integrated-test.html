@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Search & Multi-Group Filtering</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo, useCallback } = React;
+
+    // Sample Data Source
+    const ITEMS = [
+      { name: "Premium Headphones", tags: ["Wireless", "Noise-Canceling"] },
+      { name: "Sport Earbuds", tags: ["Wireless", "Waterproof"] },
+      { name: "Bluetooth Speaker", tags: ["Wireless", "Portable", "Waterproof"] },
+      { name: "Studio Microphone", tags: ["Noise-Canceling"] },
+      { name: "Travel Power Bank", tags: ["Portable"] },
+      { name: "Smart Watch", tags: ["Wireless", "Waterproof", "Portable"] }
+    ];
+
+    const AVAILABLE_FEATURES = ["Wireless", "Waterproof", "Noise-Canceling", "Portable"];
+    let groupIdCounter = 0;
+    const newGroupId = () => `group-${++groupIdCounter}`;
+
+    function App() {
+      const [searchQuery, setSearchQuery] = useState("");
+      const [groups, setGroups] = useState([{ id: newGroupId(), selected: [] }]);
+
+      const addGroup = useCallback(() => {
+        setGroups((g) => [...g, { id: newGroupId(), selected: [] }]);
+      }, []);
+
+      const removeGroup = useCallback((id) => {
+        setGroups((g) => g.filter((grp) => grp.id !== id));
+      }, []);
+
+      const toggleFeature = useCallback((groupId, feature) => {
+        setGroups((g) =>
+          g.map((grp) =>
+            grp.id === groupId
+              ? {
+                  ...grp,
+                  selected: grp.selected.includes(feature)
+                    ? grp.selected.filter((f) => f !== feature)
+                    : [...grp.selected, feature]
+                }
+              : grp
+          )
+        );
+      }, []);
+
+      const filteredItems = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        const activeGroups = groups.filter((g) => g.selected.length > 0);
+
+        return ITEMS.filter((item) => {
+          // Exact-match keyword search (case-insensitive)
+          if (q && item.name.toLowerCase() !== q) return false;
+          // AND across groups, OR within a group
+          return activeGroups.every((grp) =>
+            grp.selected.some((tag) => item.tags.includes(tag))
+          );
+        });
+      }, [searchQuery, groups]);
+
+      return (
+        <div className="max-w-7xl mx-auto px-5 py-10">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center">
+                <span className="text-white text-sm">★</span>
+              </div>
+              <span className="text-sm font-medium text-slate-500 tracking-wide uppercase">Advanced Search</span>
+            </div>
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">Multi-Group Filtering</h1>
+            <p className="text-slate-500 mt-2 max-w-2xl">
+              Match <span className="font-semibold text-slate-700">ANY</span> tag inside a group (OR),
+              but match <span className="font-semibold text-slate-700">ALL</span> distinct groups (AND).
+              Search matches exact item names only.
+            </p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Sidebar: Filter Builder */}
+            <aside className="lg:w-[340px] shrink-0">
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 lg:sticky lg:top-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm font-semibold text-slate-900">Filter Builder</h2>
+                  <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-xs font-medium">
+                    {groups.length} group{groups.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {groups.map((group, idx) => (
+                    <div key={group.id}>
+                      {idx > 0 && (
+                        <div className="flex items-center gap-3 my-2">
+                          <div className="h-px flex-1 bg-blue-200"></div>
+                          <span className="text-[11px] font-bold tracking-wider text-blue-500">AND</span>
+                          <div className="h-px flex-1 bg-blue-200"></div>
+                        </div>
+                      )}
+                      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-3">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500 bg-slate-200 px-2 py-0.5 rounded">
+                            Match Any (OR)
+                          </span>
+                          <button
+                            onClick={() => removeGroup(group.id)}
+                            className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50"
+                            aria-label="Remove group"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2.5">
+                          {AVAILABLE_FEATURES.map((feature) => (
+                            <label key={feature} className="flex items-center gap-1.5 cursor-pointer select-none">
+                              <input
+                                type="checkbox"
+                                checked={group.selected.includes(feature)}
+                                onChange={() => toggleFeature(group.id, feature)}
+                                className="w-4 h-4 accent-slate-900"
+                              />
+                              <span className="text-sm text-slate-700">{feature}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={addGroup}
+                  className="w-full mt-4 py-2.5 rounded-lg border border-dashed border-slate-300 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors"
+                >
+                  + Add Alternative Group (OR)
+                </button>
+              </div>
+            </aside>
+
+            {/* Main content */}
+            <main className="flex-1 min-w-0">
+              <div className="relative mb-6">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by exact item name..."
+                  className="w-full pl-10 pr-4 h-12 bg-white border border-slate-200 rounded-xl shadow-sm text-base outline-none focus:ring-2 focus:ring-slate-300"
+                />
+              </div>
+
+              <p className="mb-4 text-sm text-slate-500">
+                <span className="font-semibold text-slate-900">{filteredItems.length}</span> of {ITEMS.length} items
+              </p>
+
+              {filteredItems.length === 0 ? (
+                <div className="text-center py-20 rounded-2xl border border-dashed border-slate-200 bg-white/50">
+                  <p className="text-slate-400">No items match this configuration of group criteria.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                  {filteredItems.map((item) => (
+                    <div key={item.name} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:shadow-md transition-shadow">
+                      <h4 className="font-semibold text-slate-900 mb-3">{item.name}</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {item.tags.map((tag) => (
+                          <span key={tag} className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-xs font-medium">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

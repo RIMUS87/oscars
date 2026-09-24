@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search & Multi-Group Filtering</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: fit-content;
+            min-width: 300px;
+        }
+        .main-content {
+            flex: 3;
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .group-container {
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .group-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #64748b;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+        .checkbox-label {
+            display: inline-block;
+            margin: 4px 10px 4px 0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .add-group-btn {
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .add-group-btn:hover {
+            background: #0056b3;
+        }
+        .logic-divider {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 12px;
+            font-weight: bold;
+            color: #3b82f6;
+            position: relative;
+        }
+        .logic-divider::before, .logic-divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background: #bfdbfe;
+        }
+        .logic-divider::before { left: 0; }
+        .logic-divider::after { right: 0; }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card h4 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Sidebar Advanced Builder -->
+    <aside class="sidebar">
+        <h2 style="margin-top: 0;">Advanced Filter</h2>
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
+            Match <strong>ANY</strong> item inside a group (OR), but match <strong>ALL</strong> distinct groups (AND).
+        </p>
+        
+        <!-- Interactive Filter Groups Container -->
+        <div id="filterGroupsWrapper"></div>
+
+        <button type="button" class="add-group-btn" onclick="addNewGroup()">+ Add Alternative Group (OR)</button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search by item name..." oninput="filterItems()">
+        
+        <div id="resultsGrid" class="results-grid">
+            <!-- Dynamically injected items -->
+        </div>
+    </main>
+</div>
+
+<script>
+    // Sample Data Source
+    const items = [
+        { name: "Premium Headphones", tags: ["Wireless", "Noise-Canceling"] },
+        { name: "Sport Earbuds", tags: ["Wireless", "Waterproof"] },
+        { name: "Bluetooth Speaker", tags: ["Wireless", "Portable", "Waterproof"] },
+        { name: "Studio Microphone", tags: ["Noise-Canceling"] },
+        { name: "Travel Power Bank", tags: ["Portable"] },
+        { name: "Smart Watch", tags: ["Wireless", "Waterproof", "Portable"] }
+    ];
+
+    const availableFeatures = ["Wireless", "Waterproof", "Noise-Canceling", "Portable"];
+    let groupIdCounter = 0;
+
+    // Adds a new group panel containing criteria checkboxes
+    function addNewGroup() {
+        groupIdCounter++;
+        const wrapper = document.getElementById('filterGroupsWrapper');
+        
+        // Add an visual 'AND' link between sequential groups
+        if (wrapper.children.length > 0) {
+            const divider = document.createElement('div');
+            divider.className = 'logic-divider';
+            divider.innerText = 'AND';
+            wrapper.appendChild(divider);
+        }
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'group-container';
+        groupDiv.id = `group-${groupIdCounter}`;
+
+        // Create group layout
+        let checkboxesHTML = availableFeatures.map(feature => `
+            <label class="checkbox-label">
+                <input type="checkbox" class="group-checkbox" value="${feature}" onchange="filterItems()"> ${feature}
+            </label>
+        `).join('');
+
+        groupDiv.innerHTML = `
+            <div class="group-header">
+                <span class="group-title">Match Any (OR)</span>
+                <button class="remove-btn" onclick="removeGroup(${groupIdCounter})">Remove</button>
+            </div>
+            <div>${checkboxesHTML}</div>
+        `;
+
+        wrapper.appendChild(groupDiv);
+        filterItems();
+    }
+
+    function removeGroup(id) {
+        const groupEl = document.getElementById(`group-${id}`);
+        
+        // Handle removing the adjacent 'AND' visual dividers
+        if (groupEl.previousElementSibling && groupEl.previousElementSibling.className === 'logic-divider') {
+            groupEl.previousElementSibling.remove();
+        } else if (groupEl.nextElementSibling && groupEl.nextElementSibling.className === 'logic-divider') {
+            groupEl.nextElementSibling.remove();
+        }
+
+        groupEl.remove();
+        filterItems();
+    }
+
+    function filterItems() {
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+        
+        // Extract selections out of each defined DOM group element
+        const HTMLgroups = document.querySelectorAll('.group-container');
+        const activeCriteriaGroups = [];
+
+        HTMLgroups.forEach(groupEl => {
+            const checkedInGroup = Array.from(groupEl.querySelectorAll('.group-checkbox:checked'))
+                                        .map(cb => cb.value);
+            if (checkedInGroup.length > 0) {
+                activeCriteriaGroups.push(checkedInGroup);
+            }
+        });
+
+        // Main filter execution logic
+        const filteredItems = items.filter(item => {
+            // 1. Check Title Text Search Match
+            const matchesSearch = item.name.toLowerCase().includes(searchQuery);
+            if (!matchesSearch) return false;
+
+            // 2. Multi-Group Combinatorial Evaluation (AND logic across distinct lists)
+            // item must return TRUE for every list of rules built
+            return activeCriteriaGroups.every(featureGroup => {
+                // Inside a group, item needs AT LEAST ONE matching parameter (OR logic)
+                return featureGroup.some(tag => item.tags.includes(tag));
+            });
+        });
+
+        renderResults(filteredItems);
+    }
+
+    function renderResults(itemsToRender) {
+        const grid = document.getElementById('resultsGrid');
+        grid.innerHTML = '';
+
+        if (itemsToRender.length === 0) {
+            grid.innerHTML = '<div class="no-results">No items match this configuration of group criteria.</div>';
+            return;
+        }
+
+        itemsToRender.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const tagsHTML = item.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            card.innerHTML = `
+                <h4>${item.name}</h4>
+                <div>${tagsHTML}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Initialize with one starting filter group
+    addNewGroup();
+</script>
+
+</body>
+</html>

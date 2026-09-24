@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plant finder</title>
+<style>
+/* Colors live here - change these to match your site. */
+:root{
+  --bg:#f4f6f8; --surface:#fff; --ink:#18212b; --muted:#5c6b7a; --line:#d5dde5;
+  --accent:#0a6c74; --on-accent:#fff; --tint:#dff1f0;
+  --page-max:1800px;   /* "none" = use the whole window; or a limit such as 1400px */
+  /* Card look - tweak these */
+  --card-min:230px; --card-gap:14px; --card-radius:6px; --card-pad:16px;
+  --card-bg:var(--surface); --card-border:var(--line);
+
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0f1519; --surface:#171f25; --ink:#e6edf2; --muted:#93a3b1; --line:#2a3640; --accent:#5fd0c8; --on-accent:#08211f; --tint:#183a3a}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:var(--page-max);margin:0 auto;padding:32px 20px 64px}
+h1{margin:0;font-size:2rem;line-height:1.15;letter-spacing:-.02em}
+h2{margin:0 0 4px;font-size:1rem}
+.sub,.hint{color:var(--muted);margin:0}
+.hint{font-size:.875rem}
+.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}
+.layout.collapsed{grid-template-columns:minmax(0,1fr)}
+.layout.collapsed aside{display:none}
+.lead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+aside{position:sticky;top:16px;display:grid;gap:24px;padding:2px;max-height:calc(100vh - 32px);overflow:auto}
+@media(max-width:840px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;overflow:visible}}
+
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;line-height:1.3}
+button:hover{border-color:var(--accent)}
+button[aria-pressed=true],button.solid{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button.plain{border:0;background:none;padding:2px 4px;color:var(--muted);text-decoration:underline;justify-self:start}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.row{display:flex;gap:8px;margin-top:10px}
+.row input{flex:1}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{display:inline-flex;align-items:center;background:var(--tint);border:1px solid transparent;border-radius:999px;padding:2px 4px 2px 12px;font-size:.875rem}
+.chip button{border:0;background:none;padding:0 8px;font-size:1.1rem;line-height:1.4;color:var(--muted)}
+
+#rules{margin:12px 0;display:grid;gap:10px}
+.set{display:grid;gap:10px;border-left:2px solid var(--line);padding-left:14px}
+.set.multi{border-left-color:var(--accent)}
+.set>button{justify-self:start}
+.set-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.875rem;color:var(--muted)}
+.join.top{font-weight:600;color:var(--ink)}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:8px}
+.rule-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.875rem;color:var(--muted)}
+.join{font-size:.8125rem;color:var(--muted);font-style:italic}
+.pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+select:disabled{opacity:.55;cursor:not-allowed}
+
+.bar{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+#count{font-size:1.125rem}
+#count strong{font-size:1.5rem;font-variant-numeric:tabular-nums}
+.sorts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--card-min),1fr));gap:var(--card-gap);margin-top:18px}
+.card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--card-radius);overflow:hidden;display:flex;flex-direction:column}
+.card.img-bottom{flex-direction:column-reverse}
+.card.img-left{flex-direction:row}
+.card.img-right{flex-direction:row-reverse}
+.body{flex:1;min-width:0;display:grid;gap:8px;align-content:start;padding:var(--card-pad)}
+.media{flex:none;overflow:hidden;background:var(--tint)}
+.img-left .media,.img-right .media{align-self:stretch}
+.media.missing{min-height:80px}
+.media img{display:block;width:100%;height:100%}
+.card a{color:inherit}
+.title{margin:0;font-size:1.0625rem}
+.sub-line,.foot{margin:0;color:var(--muted)}
+.sub-line{font-size:.9375rem}
+.foot{font-size:.875rem}
+.row-group{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card .link-btn{justify-self:start;padding:6px 14px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);text-decoration:none;font-size:.875rem}
+.card .link-btn:hover,a.card:hover .link-btn{background:var(--accent);color:var(--on-accent)}
+a.card{color:inherit;text-decoration:none}
+a.card:hover{border-color:var(--accent)}
+.badge{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:.875rem}
+dt{color:var(--muted)}
+dd{margin:0}
+.empty{grid-column:1/-1;color:var(--muted);padding:32px 0;margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="t-heading"></h1>
+    <p class="sub" id="t-intro"></p>
+  </header>
+
+  <div class="layout" id="layout">
+    <aside id="panel">
+      <section>
+        <h2 id="t-searchTitle"></h2>
+        <p class="hint" id="t-searchHint"></p>
+        <div class="row"><input id="q" type="search" aria-label="Search keyword" autocomplete="off" spellcheck="false"></div>
+      </section>
+
+      <section>
+        <h2 id="t-filterTitle"></h2>
+        <p class="hint" id="t-filterHint"></p>
+        <div id="rules"></div>
+        <button type="button" id="t-addSet" data-a="add-set"></button>
+      </section>
+
+      <button type="button" class="plain" id="t-clear" data-a="clear"></button>
+    </aside>
+
+    <main>
+      <div class="bar">
+        <div class="lead"><button type="button" id="toggle" data-a="toggle" aria-expanded="true" aria-controls="panel"></button><div id="count" aria-live="polite"></div></div>
+        <div class="sorts" id="sorts" role="group" aria-label="Sort items"></div>
+      </div>
+      <div id="grid" class="grid"></div>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIG: edit this block ================= */
+
+// Item properties offered as filter options. Values can be a string or an array of strings.
+// `order` (optional) sets the order of that field's drop-down values; any value you leave out follows, A-Z.
+const FILTER_FIELDS = [
+  { key: "category", label: "Category", order: ["Foliage", "Tree", "Succulent", "Trailing", "Fern", "Flowering", "Palm"] },
+  { key: "light",    label: "Light",    order: ["Bright", "Medium", "Low"] },
+  { key: "water",    label: "Water",    order: ["Low", "Moderate", "High"] },
+  { key: "petSafe",  label: "Pet-safe", order: ["Yes", "No"] }
+];
+
+// One button per entry. Items are sorted by the position of their `key` value in `order`.
+// Values missing from `order` go last. Leave `order` out for plain A-Z / low-to-high sorting.
+// Clicking an active button reverses it.
+const SORT_ORDERS = [
+  { label: "A–Z",                   key: "name" },
+  { label: "Brightest light first", key: "light", order: ["Bright", "Medium", "Low"] },
+  { label: "Thirstiest first",      key: "water", order: ["High", "Moderate", "Low"] },
+  { label: "Price",                 key: "price" },
+  { label: "My picks first",        key: "name",  order: ["Monstera", "Pothos", "Calathea", "Snake plant"] }
+];
+
+// Start with the search and filter panel folded away? Visitors can still open it.
+const START_COLLAPSED = false;
+
+// Text shown on the page. `count` returns HTML, so keep the <strong> tags (or drop them).
+const TEXT = {
+  pageTitle: "Plant finder",
+  heading: "Plant finder",
+  intro: "Search by keyword, then narrow with required filters.",
+  searchTitle: "Search",
+  searchHint: "Results update as you type. The keyword must match exactly.",
+  searchPlaceholder: "Type a keyword",
+  filterTitle: "Required filters",
+  filterHint: "An item matches when it meets every requirement in at least one set. A requirement with several options is met by any one of them.",
+  addRequirement: "Add requirement",
+  addSet: "Add alternative set",
+  clear: "Clear search and filters",
+  hideFilters: "Hide search and filters",
+  showFilters: "Show search and filters",
+  active: n => ` (${n} active)`,   // added to the button while the panel is folded away and filters are on
+  sortLabel: "Sort",
+  originalOrder: "Original order",
+  count: (n, total) => `<strong>${n}</strong> of ${total} items match`,
+  empty: "No items match every criterion. Remove a requirement or search term to see more."
+};
+
+// How each item box looks. Every element has `show` (true, false, or item => true/false) and `style`
+// (any CSS, e.g. "font-size:1.25rem;text-align:center;color:#a00"). `value` is an item property name or a function;
+// `text` (optional) is fixed text that replaces `value`. Any single item can override all of this (see "Customizing one item").
+const CARD = {
+  minWidth: "230px",   // narrowest a box can get; the grid fits as many per row as it can
+  // Top to bottom. Names in the same [pair] share a row. Leave a name out to remove it everywhere.
+  order: [["title", "badge"], "subtitle", "details", "link", "footer"],
+
+  box: { style: "" },                      // the whole item box, e.g. "background:#fff8e1;border-color:#e0b000"
+  image: {
+    show: true, value: "image", alt: "name",
+    position: "top",                       // "top" | "bottom" | "left" | "right"
+    width: "", height: "", ratio: "4 / 3", // any CSS size ("100%", "120px"); ratio applies when height is empty
+    fit: "cover", focus: "center",         // how the picture fills its box, and which part stays visible ("center top")
+    radius: "", align: ""                  // radius: "12px" or "50%"; align: "start" | "center" | "end"
+  },
+  title:    { show: true, value: "name", link: true, style: "" },        // link: true makes it a link to link.url
+  badge:    { show: true, value: it => it.price != null ? "$" + it.price : "", style: "" },
+  subtitle: { show: true, value: "tagline", style: "" },
+  details:  { show: true, style: "", labelStyle: "", valueStyle: "",
+              rows: [["Category", "category"], ["Light", "light"], ["Water", "water"], ["Pet-safe", "petSafe"]] },   // [label, property]
+  // An item with a `url` becomes one big link (the whole box). Set wholeBox to false to link only the title and button.
+  link:     { show: true, url: "url", label: "View details", wholeBox: true, newTab: false, style: "" },   // label: text, or it => text
+  footer:   { show: true, value: "", style: "" }                           // e.g. it => "Ships in " + it.days + " days"
+};
+
+// Your items. `keywords` is a hidden exact-match set: the search bar matches against it,
+// but it is never shown on the page. Add as many per item as you like.
+// Optional extras per item: image, tagline, url (see CARD above), or any property you reference there.
+//
+// ---- Customizing one item ----
+// Give the item a `card` property. It uses the same names and fields as CARD above, and only what you list changes:
+//   { name: "Monstera", ...,
+//     card: {
+//       box:      { style: "background:#fff8e1" },        // this item's whole box
+//       image:    { position: "left", width: "140px" },   // this item's picture
+//       title:    { style: "color:#a00" },                // or text: "A different title"
+//       subtitle: { text: "Best seller" },                // fixed text instead of a property
+//       link:     { label: "Read more", newTab: true },   // or wholeBox: false
+//       footer:   { show: false },                        // hide one element
+//       order:    ["title", "subtitle", "link"]           // this item's own top-to-bottom order
+//     } }
+// Shortcut for hiding: hide: ["image", "footer"]. Hiding "link" also removes the item's link.
+const SAMPLE_ITEMS = [
+  { name: "Monstera",         category: "Foliage",   light: "Medium", water: "Moderate", petSafe: "No",  price: 34, keywords: ["climber", "large-leaf", "tropical", "statement"],
+    card: { box: { style: "border:2px solid var(--accent)" }, subtitle: { text: "Best seller" } } },
+  { name: "Snake plant",      category: "Succulent", light: "Low",    water: "Low",      petSafe: "No",  price: 22, keywords: ["upright", "hardy", "beginner", "air-purifying"] },
+  { name: "Pothos",           category: "Trailing",  light: "Low",    water: "Moderate", petSafe: "No",  price: 14, keywords: ["trailing", "beginner", "hardy", "hanging"] },
+  { name: "Fiddle leaf fig",  category: "Tree",      light: "Bright", water: "Moderate", petSafe: "No",  price: 48, keywords: ["large-leaf", "statement", "tree", "fussy"] },
+  { name: "Spider plant",     category: "Trailing",  light: "Medium", water: "Moderate", petSafe: "Yes", price: 12, keywords: ["hanging", "beginner", "air-purifying", "pet-friendly"] },
+  { name: "Aloe vera",        category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 16, keywords: ["medicinal", "beginner", "desert", "compact"] },
+  { name: "Boston fern",      category: "Fern",      light: "Medium", water: "High",     petSafe: "Yes", price: 20, keywords: ["hanging", "humid", "pet-friendly", "feathery"] },
+  { name: "Peace lily",       category: "Flowering", light: "Low",    water: "Moderate", petSafe: "No",  price: 26, keywords: ["flowering", "air-purifying", "shade", "beginner"] },
+  { name: "Parlor palm",      category: "Palm",      light: "Low",    water: "Moderate", petSafe: "Yes", price: 28, keywords: ["upright", "shade", "pet-friendly", "tropical"] },
+  { name: "Jade plant",       category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 18, keywords: ["desert", "compact", "long-lived", "beginner"] },
+  { name: "Calathea",         category: "Foliage",   light: "Medium", water: "High",     petSafe: "Yes", price: 24, keywords: ["patterned", "humid", "tropical", "fussy"] },
+  { name: "String of pearls", category: "Succulent", light: "Bright", water: "Low",      petSafe: "No",  price: 19, keywords: ["trailing", "hanging", "desert", "fussy"] }
+];
+
+// ADD YOUR OWN ITEMS HERE. Copy the template line, fill it in, and put a comma after each item.
+// Delete any field you don't need. Set SHOW_SAMPLE_ITEMS to false to hide the samples above.
+const SHOW_SAMPLE_ITEMS = true;
+const MY_ITEMS = [
+  // { name: "Item name", keywords: ["one", "two"], category: "", light: "", water: "", petSafe: "", price: 0, image: "images/photo.jpg", tagline: "", url: "page.html",
+  //   card: { subtitle: { text: "Shown only on this item" } } },
+];
+const ITEMS = [...(SHOW_SAMPLE_ITEMS ? SAMPLE_ITEMS : []), ...MY_ITEMS];
+
+/* ================= APP: no edits needed below ================= */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = s => String(s).trim().toLowerCase();
+const list = v => (Array.isArray(v) ? v : [v]).filter(x => x != null);
+const labelOf = key => FILTER_FIELDS.find(f => f.key === key).label;
+
+const rankIn = (order = [], v) => { const i = order.map(norm).indexOf(norm(v)); return i < 0 ? Infinity : i; };
+const OPTIONS = FILTER_FIELDS.map(f => ({ ...f, values: [...new Set(ITEMS.flatMap(i => list(i[f.key])))].sort((a, b) => {
+  const x = rankIn(f.order, a), y = rankIn(f.order, b);
+  return x === y ? String(a).localeCompare(String(b), undefined, { numeric: true }) : x < y ? -1 : 1;
+}) }));
+
+// term: the search keyword.
+// sets: alternative groups. Each set holds requirements ("rules") and each rule holds picks {key, value}.
+//   A rule passes if ANY of its picks match. A set passes if EVERY rule in it passes.
+//   An item matches if ANY set passes (sets with no picks are ignored).
+const state = { collapsed: START_COLLAPSED, term: "", sets: [{ id: 0, rules: [] }], sort: -1, desc: false };
+let nextId = 1;
+const findSet = id => state.sets.find(g => g.id === id);
+const findRule = id => state.sets.flatMap(g => g.rules).find(r => r.id === id);
+const activeSets = () => state.sets.map(g => g.rules.filter(r => r.picks.length)).filter(g => g.length);
+
+const passes = (item, r) => r.picks.some(p => list(item[p.key]).some(v => norm(v) === norm(p.value)));
+
+function matches(item, sets) {
+  const kws = (item.keywords || []).map(norm);
+  if (state.term && !kws.includes(norm(state.term))) return false;
+  return !sets.length || sets.some(g => g.every(r => passes(item, r)));
+}
+
+function sortItems(items) {
+  const s = SORT_ORDERS[state.sort];
+  if (!s) return items;
+  const order = s.order && s.order.map(norm);
+  const val = it => {
+    const v = list(it[s.key])[0];
+    if (order) { const i = order.indexOf(norm(v ?? "")); return i < 0 ? Infinity : i; }
+    return v ?? "";
+  };
+  const dir = state.desc ? -1 : 1;
+  return [...items].sort((a, b) => {
+    const x = val(a), y = val(b);
+    if (x === y) return 0;
+    const r = typeof x === "number" && typeof y === "number"
+      ? (x < y ? -1 : 1)
+      : String(x).localeCompare(String(y), undefined, { numeric: true, sensitivity: "base" });
+    return r * dir;
+  });
+}
+
+const has = v => v != null && String(v).trim() !== "";
+const pick = (spec, it) => typeof spec === "function" ? spec(it) : Array.isArray(it[spec]) ? it[spec].join(", ") : it[spec];
+const conf = (name, it) => ({ ...CARD[name], ...(it.card && it.card[name]) });   // page-wide settings + this item's overrides
+const st = (c, key = "style") => c[key] ? ` style="${esc(c[key])}"` : "";
+const val = (c, it) => c.text != null ? c.text : pick(c.value, it);
+const shows = (name, it) => {
+  if (!CARD[name] || [...(it.hide || []), ...((it.card && it.card.hide) || [])].includes(name)) return false;
+  const c = conf(name, it);
+  return typeof c.show === "function" ? c.show(it) : c.show !== false;
+};
+const linkOf = it => shows("link", it) ? pick(conf("link", it).url, it) : "";
+const tab = it => conf("link", it).newTab ? ' target="_blank" rel="noopener"' : "";
+const textBlock = (name, tag, cls) => it => {
+  const c = conf(name, it), v = val(c, it);
+  return has(v) ? `<${tag} class="${cls}"${st(c)}>${esc(v)}</${tag}>` : "";
+};
+// `whole` is true when the entire box is the link, so inner links become plain text/buttons (no nested links).
+const BLOCKS = {
+  title: (it, whole) => {
+    const c = conf("title", it), v = val(c, it);
+    if (!has(v)) return "";
+    const href = c.link && !whole ? linkOf(it) : "";
+    return `<h3 class="title"${st(c)}>${has(href) ? `<a href="${esc(href)}"${tab(it)}>${esc(v)}</a>` : esc(v)}</h3>`;
+  },
+  badge: textBlock("badge", "span", "badge"),
+  subtitle: textBlock("subtitle", "p", "sub-line"),
+  footer: textBlock("footer", "p", "foot"),
+  details: it => {
+    const c = conf("details", it);
+    const rows = c.rows.map(([l, spec]) => [l, pick(spec, it)]).filter(([, v]) => has(v));
+    return rows.length ? `<dl${st(c)}>${rows.map(([l, v]) => `<dt${st(c, "labelStyle")}>${esc(l)}</dt><dd${st(c, "valueStyle")}>${esc(v)}</dd>`).join("")}</dl>` : "";
+  },
+  link: (it, whole) => {
+    const c = conf("link", it), href = linkOf(it);
+    if (!has(href)) return "";
+    const label = esc(typeof c.label === "function" ? c.label(it) : c.label);
+    return whole ? `<span class="link-btn"${st(c)}>${label}</span>` : `<a class="link-btn" href="${esc(href)}"${tab(it)}${st(c)}>${label}</a>`;
+  }
+};
+
+function cardHtml(it) {
+  const I = conf("image", it), href = linkOf(it), whole = has(href) && conf("link", it).wholeBox !== false;
+  const pos = ["top", "bottom", "left", "right"].includes(I.position) ? I.position : "top";
+  const side = pos === "left" || pos === "right";
+  const src = shows("image", it) ? pick(I.value, it) : "";
+  const align = { start: "flex-start", center: "center", end: "flex-end" }[I.align];
+  const boxStyle = [
+    `width:${I.width || (side ? "120px" : "100%")}`,
+    I.height ? `height:${I.height}` : side ? "" : `aspect-ratio:${I.ratio || "4 / 3"}`,
+    I.radius ? `border-radius:${I.radius}` : "",
+    align ? `align-self:${align}` : ""
+  ].filter(Boolean).join(";");
+  const imgStyle = `object-fit:${I.fit || "cover"};object-position:${I.focus || "center"}`;
+  const media = has(src)
+    ? `<div class="media" style="${esc(boxStyle)}"><img src="${esc(src)}" alt="${esc(pick(I.alt, it) ?? "")}" loading="lazy" style="${esc(imgStyle)}" onerror="this.parentNode.classList.add('missing');this.remove()"></div>`
+    : "";
+  const rows = ((it.card && it.card.order) || CARD.order).map(spec => {
+    const parts = [].concat(spec).filter(n => shows(n, it)).map(n => BLOCKS[n](it, whole)).filter(Boolean);
+    return parts.length > 1 ? `<div class="row-group">${parts.join("")}</div>` : parts[0] || "";
+  }).join("");
+  const inner = `${media}<div class="body">${rows}</div>`, cls = `card img-${pos}`, boxAttr = st(conf("box", it));
+  return whole
+    ? `<a class="${cls}" href="${esc(href)}"${tab(it)}${boxAttr}>${inner}</a>`
+    : `<article class="${cls}"${boxAttr}>${inner}</article>`;
+}
+
+function render(focusRule, which = "field") {
+  const ruleHtml = r => {
+    const chips = r.picks.map((p, pi) =>
+      `${pi ? '<span class="join">or</span>' : ""}<span class="chip">${esc(labelOf(p.key))}: ${esc(p.value)}<button type="button" data-a="rm-pick" data-r="${r.id}" data-i="${pi}" aria-label="Remove ${esc(p.value)}">×</button></span>`).join("");
+    const cur = OPTIONS.find(f => f.key === r.field);
+    const fieldSel = `<select data-r="${r.id}" data-s="field" aria-label="Filter category"><option value="">Filter by…</option>${OPTIONS.map(f => `<option value="${esc(f.key)}"${f.key === r.field ? " selected" : ""}>${esc(f.label)}</option>`).join("")}</select>`;
+    const valueSel = `<select data-r="${r.id}" data-s="value" aria-label="${cur ? esc(cur.label) + " option" : "Filter option"}"${cur ? "" : " disabled"}><option value="">${r.picks.length ? "Or add…" : "Select…"}</option>${cur ? cur.values.map(v => `<option value="${esc(v)}"${r.picks.some(p => p.key === cur.key && norm(p.value) === norm(v)) ? " disabled" : ""}>${esc(v)}</option>`).join("") : ""}</select>`;
+    return `<div class="rule">
+        <div class="rule-head"><span>${r.picks.length > 1 ? "Any one of these" : "Required"}</span><button type="button" class="plain" data-a="rm-rule" data-r="${r.id}">Remove</button></div>
+        ${chips ? `<div class="chips">${chips}</div>` : ""}
+        <div class="pickers">${fieldSel}${valueSel}</div>
+      </div>`;
+  };
+
+  const multi = state.sets.length > 1;
+  $("#rules").innerHTML = state.sets.map((g, gi) => `${gi ? '<div class="join top">or</div>' : ""}
+    <div class="set${multi ? " multi" : ""}">
+      ${multi ? `<div class="set-head"><span>Meets all of these</span><button type="button" class="plain" data-a="rm-set" data-g="${g.id}">Remove set</button></div>` : ""}
+      ${g.rules.map((r, ri) => (ri ? '<div class="join">and</div>' : "") + ruleHtml(r)).join("")}
+      <button type="button" data-a="add-rule" data-g="${g.id}">${esc(TEXT.addRequirement)}</button>
+    </div>`).join("");
+
+  const sets = activeSets();
+
+  const nActive = (state.term ? 1 : 0) + sets.reduce((n, g) => n + g.length, 0);
+  $("#layout").classList.toggle("collapsed", state.collapsed);
+  $("#toggle").setAttribute("aria-expanded", String(!state.collapsed));
+  $("#toggle").textContent = (state.collapsed ? TEXT.showFilters : TEXT.hideFilters) + (state.collapsed && nActive ? TEXT.active(nActive) : "");
+  const shown = sortItems(ITEMS.filter(it => matches(it, sets)));
+  $("#count").innerHTML = TEXT.count(shown.length, ITEMS.length);
+
+  const btn = (i, text) => `<button type="button" data-a="sort" data-i="${i}" aria-pressed="${state.sort === i}">${esc(text)}${state.sort === i && i >= 0 ? (state.desc ? " ↓" : " ↑") : ""}</button>`;
+  $("#sorts").innerHTML = `<span class="hint">${esc(TEXT.sortLabel)}</span>` + btn(-1, TEXT.originalOrder) + SORT_ORDERS.map((s, i) => btn(i, s.label)).join("");
+
+  $("#grid").innerHTML = shown.length ? shown.map(cardHtml).join("")
+    : `<p class="empty">${esc(TEXT.empty)}</p>`;
+
+  if (focusRule) $(`select[data-r="${focusRule}"][data-s="${which}"]`)?.focus();
+}
+
+// Live search: every keystroke re-runs the filter. One exact keyword at a time.
+const q = $("#q");
+const readTerm = () => q.value.trim().replace(/\s+/g, " ");
+q.addEventListener("input", () => { state.term = readTerm(); render(); });
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-a]");
+  if (!b) return;
+  const { a, i, r, g } = b.dataset;
+  if (a === "add-rule") { const id = nextId++; findSet(+g).rules.push({ id, field: "", picks: [] }); return render(id); }
+  else if (a === "add-set") { const id = nextId++; state.sets.push({ id: nextId++, rules: [{ id, field: "", picks: [] }] }); return render(id); }
+  else if (a === "rm-set") state.sets = state.sets.filter(x => x.id !== +g);
+  else if (a === "rm-rule") state.sets.forEach(x => { x.rules = x.rules.filter(y => y.id !== +r); });
+  else if (a === "rm-pick") findRule(+r).picks.splice(+i, 1);
+  else if (a === "sort") { const n = +i; state.desc = n >= 0 && n === state.sort ? !state.desc : false; state.sort = n; }
+  else if (a === "toggle") state.collapsed = !state.collapsed;
+  else if (a === "clear") { q.value = ""; state.term = ""; state.sets = [{ id: nextId++, rules: [] }]; }
+  render();
+});
+
+document.addEventListener("change", e => {
+  const sel = e.target.closest("select[data-r]");
+  if (!sel) return;
+  const rule = findRule(+sel.dataset.r);
+  if (sel.dataset.s === "field") { rule.field = sel.value; return render(rule.id, "value"); }
+  if (!sel.value) return;
+  rule.picks.push({ key: rule.field, value: sel.value });
+  render(rule.id, "value");
+});
+
+document.title = TEXT.pageTitle;
+["heading", "intro", "searchTitle", "searchHint", "filterTitle", "filterHint", "addSet", "clear"].forEach(k => { $("#t-" + k).textContent = TEXT[k]; });
+q.placeholder = TEXT.searchPlaceholder;
+if (CARD.minWidth) document.documentElement.style.setProperty("--card-min", CARD.minWidth);
+state.term = readTerm();
+render();
+</script>
+</body>
+</html>
