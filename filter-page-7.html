@@ -63,11 +63,11 @@ select:disabled{opacity:.55;cursor:not-allowed}
 #count strong{font-size:1.5rem;font-variant-numeric:tabular-nums}
 .sorts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--card-min),1fr));gap:var(--card-gap);margin-top:18px}
-.card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--card-radius);overflow:hidden;display:flex;flex-direction:column}
+.card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--card-radius);overflow:hidden;display:flex;flex-direction:column;min-height:var(--card-min-h,0);max-height:var(--card-max-h,none)}
 .card.img-bottom{flex-direction:column-reverse}
 .card.img-left{flex-direction:row}
 .card.img-right{flex-direction:row-reverse}
-.body{flex:1;min-width:0;display:grid;gap:8px;align-content:start;padding:var(--card-pad)}
+.body{flex:1;min-width:0;min-height:0;overflow:hidden;display:grid;gap:8px;align-content:start;padding:var(--card-pad)}
 .media{flex:none;overflow:hidden;background:var(--tint)}
 .img-left .media,.img-right .media{align-self:stretch}
 .media.missing{min-height:80px}
@@ -150,6 +150,9 @@ const SORT_ORDERS = [
 // Start with the search and filter panel folded away? Visitors can still open it.
 const START_COLLAPSED = false;
 
+// Show every item before any keyword or filter is entered? Set to false to start with an empty grid.
+const SHOW_ALL_ITEMS_AT_START = true;
+
 // Text shown on the page. `count` returns HTML, so keep the <strong> tags (or drop them).
 const TEXT = {
   pageTitle: "Plant finder",
@@ -169,6 +172,7 @@ const TEXT = {
   sortLabel: "Sort",
   originalOrder: "Original order",
   count: (n, total) => `<strong>${n}</strong> of ${total} items match`,
+  prompt: "Type a keyword or add a filter to see items.",   // shown instead of the grid when SHOW_ALL_ITEMS_AT_START is false
   empty: "No items match every criterion. Remove a requirement or search term to see more."
 };
 
@@ -176,17 +180,23 @@ const TEXT = {
 // (any CSS, e.g. "font-size:1.25rem;text-align:center;color:#a00"). `value` is an item property name or a function;
 // `text` (optional) is fixed text that replaces `value`. Any single item can override all of this (see "Customizing one item").
 const CARD = {
-  minWidth: "130px",   // narrowest a box can get; the grid fits as many per row as it can
+  minWidth: "140px",   // narrowest a box can get; the grid fits as many per row as it can
+  minHeight: "",       // shortest and tallest a box can be, e.g. "220px". Empty = as tall as its content.
+  maxHeight: "250px",       // Text past the limit is cut off; a picture is never cropped by it.
+  // Different sizes for phones and small windows (at or below `breakpoint`). Leave a value empty to keep the one above.
+  // imageWidth / imageHeight resize the picture on small screens, e.g. "90px".
+  mobile: { breakpoint: "640px", minWidth: "160px", minHeight: "", maxHeight: "", gap: "10px", imageWidth: "", imageHeight: "" },
   // Top to bottom. Names in the same [pair] share a row. Leave a name out to remove it everywhere.
   order: [["title", "badge"], "subtitle", "details", "link", "footer"],
 
   box: { style: "" },                      // the whole item box, e.g. "background:#fff8e1;border-color:#e0b000"
   image: {
     show: true, value: "image", alt: "name",
-    position: "top",                       // "top" | "bottom" | "left" | "right"
-    width: "100%", height: "", ratio: "3 / 3", // any CSS size ("100%", "120px"); ratio applies when height is empty
-    fit: "cover", focus: "center",         // how the picture fills its box, and which part stays visible ("center top")
-    radius: "", align: ""                  // radius: "12px" or "50%"; align: "start" | "center" | "end"
+    position: "top",                       // which side of the box the picture goes: "top" | "bottom" | "left" | "right"
+    width: "133px", height: "200px", ratio: "",      // any CSS size ("100%", "120px"); top/bottom default to full width, left/right to 120px.
+                                           // Leave height and ratio empty to show the whole picture at its own proportions.
+    fit: "contain", focus: "center",       // "contain" always shows the whole picture; "cover" fills its box and crops the edges
+    radius: "6px", align: "start"                  // radius: "12px" or "50%"; align: "start" | "center" | "end"
   },
   title:    { show: true, value: "name", link: true, style: "" },        // link: true makes it a link to link.url
   badge:    { show: true, value: it => it.price != null ? "$" + it.price : "", style: "" },
@@ -194,7 +204,7 @@ const CARD = {
   details:  { show: true, style: "", labelStyle: "", valueStyle: "",
               rows: [["Category", "category"], ["Light", "light"], ["Water", "water"], ["Pet-safe", "petSafe"]] },   // [label, property]
   // An item with a `url` becomes one big link (the whole box). Set wholeBox to false to link only the title and button.
-  link:     { show: true, url: "url", label: "", wholeBox: true, newTab: false, style: "" },   // label: text, or it => text
+  link:     { show: true, url: "url", label: "View details", wholeBox: true, newTab: false, style: "" },   // label: text, or it => text
   footer:   { show: true, value: "", style: "" }                           // e.g. it => "Ships in " + it.days + " days"
 };
 
@@ -235,8 +245,7 @@ const SAMPLE_ITEMS = [
 // Delete any field you don't need. Set SHOW_SAMPLE_ITEMS to false to hide the samples above.
 const SHOW_SAMPLE_ITEMS = true;
 const MY_ITEMS = [
-  { name: "Wicked", keywords: ["wicked"], image: "files/film-posters/wicked-poster.jpg", url: "films/wicked.html",
-  card: { image: { position: "bottom", height: "70%" } } }
+  { name: "Wicked", keywords: ["wicked"], image: "files/film-posters/wicked-poster.jpg", url: "films/wicked.html" }
   // { name: "Item name", keywords: ["one", "two"], category: "", light: "", water: "", petSafe: "", price: 0, image: "images/photo.jpg", tagline: "", url: "page.html",
   //   card: { subtitle: { text: "Shown only on this item" } } },
 ];
@@ -341,12 +350,13 @@ function cardHtml(it) {
   const src = shows("image", it) ? pick(I.value, it) : "";
   const align = { start: "flex-start", center: "center", end: "flex-end" }[I.align];
   const boxStyle = [
-    `width:${I.width || (side ? "120px" : "100%")}`,
-    I.height ? `height:${I.height}` : side ? "" : `aspect-ratio:${I.ratio || "4 / 3"}`,
+    `width:var(--img-w,${I.width || (side ? "120px" : "100%")})`,
+    `height:var(--img-h,${I.height || "auto"})`,
+    !side && I.ratio && !I.height ? `aspect-ratio:${I.ratio}` : "",
     I.radius ? `border-radius:${I.radius}` : "",
     align ? `align-self:${align}` : ""
   ].filter(Boolean).join(";");
-  const imgStyle = `object-fit:${I.fit || "cover"};object-position:${I.focus || "center"}`;
+  const imgStyle = `object-fit:${I.fit || "contain"};object-position:${I.focus || "center"}`;
   const media = has(src)
     ? `<div class="media" style="${esc(boxStyle)}"><img src="${esc(src)}" alt="${esc(pick(I.alt, it) ?? "")}" loading="lazy" style="${esc(imgStyle)}" onerror="this.parentNode.classList.add('missing');this.remove()"></div>`
     : "";
@@ -388,14 +398,15 @@ function render(focusRule, which = "field") {
   $("#layout").classList.toggle("collapsed", state.collapsed);
   $("#toggle").setAttribute("aria-expanded", String(!state.collapsed));
   $("#toggle").textContent = (state.collapsed ? TEXT.showFilters : TEXT.hideFilters) + (state.collapsed && nActive ? TEXT.active(nActive) : "");
-  const shown = sortItems(ITEMS.filter(it => matches(it, sets)));
+  const hold = !SHOW_ALL_ITEMS_AT_START && !state.term && !sets.length;   // no criteria yet, and the grid should stay empty
+  const shown = hold ? [] : sortItems(ITEMS.filter(it => matches(it, sets)));
   $("#count").innerHTML = TEXT.count(shown.length, ITEMS.length);
 
   const btn = (i, text) => `<button type="button" data-a="sort" data-i="${i}" aria-pressed="${state.sort === i}">${esc(text)}${state.sort === i && i >= 0 ? (state.desc ? " ↓" : " ↑") : ""}</button>`;
   $("#sorts").innerHTML = `<span class="hint">${esc(TEXT.sortLabel)}</span>` + btn(-1, TEXT.originalOrder) + SORT_ORDERS.map((s, i) => btn(i, s.label)).join("");
 
   $("#grid").innerHTML = shown.length ? shown.map(cardHtml).join("")
-    : `<p class="empty">${esc(TEXT.empty)}</p>`;
+    : `<p class="empty">${esc(hold ? TEXT.prompt : TEXT.empty)}</p>`;
 
   if (focusRule) $(`select[data-r="${focusRule}"][data-s="${which}"]`)?.focus();
 }
@@ -433,7 +444,11 @@ document.addEventListener("change", e => {
 document.title = TEXT.pageTitle;
 ["heading", "intro", "searchTitle", "searchHint", "filterTitle", "filterHint", "addSet", "clear"].forEach(k => { $("#t-" + k).textContent = TEXT[k]; });
 q.placeholder = TEXT.searchPlaceholder;
-if (CARD.minWidth) document.documentElement.style.setProperty("--card-min", CARD.minWidth);
+const cardVars = o => [["--card-min", o.minWidth], ["--card-min-h", o.minHeight], ["--card-max-h", o.maxHeight], ["--card-gap", o.gap], ["--img-w", o.imageWidth], ["--img-h", o.imageHeight]]
+  .filter(([, v]) => v).map(([k, v]) => `${k}:${v}`).join(";");
+const mob = CARD.mobile;
+document.head.insertAdjacentHTML("beforeend",
+  `<style>:root{${cardVars(CARD)}}${mob ? `@media(max-width:${mob.breakpoint || "640px"}){:root{${cardVars(mob)}}}` : ""}</style>`);
 state.term = readTerm();
 render();
 </script>
