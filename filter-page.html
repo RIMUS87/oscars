@@ -239,3 +239,27 @@
   </script>
   </body>
 </html>
+<!--
+
+       ============ ITEMS ============
+        Styled by: .grid (the grid itself - column width comes from the --card-min variable up top),
+        .item (each box), .body (its padding and inner spacing), .media (the picture area - size
+        from --side-img-w for img-left/img-right), .title/.badge/.tagline/.details/.link-btn/.foot
+        (the text pieces inside). See CARD BOXES below for how position and appearance combine. -->
+        To add an item, copy one block below and edit it. Every item needs class="item" and these data attributes:
+          data-name       used by the A-Z sort
+          data-keywords   hidden exact-match keywords for the search bar, separated by |
+          data-category, data-light, data-water, data-pet-safe   the values the filters offer (separate several with |)
+          data-price      used by the Price sort
+        (Filters and sorts are set up in the script. A new data-... attribute only becomes a filter once it is listed in FILTER_FIELDS.)
+
+        Customizing one item, all done right here:
+          Link      use <a class="item" href="page.html"> and the whole box becomes a link. Use <article> for no link.
+          Picture   add <div class="media"><img src="images/x.jpg" alt="..."></div> as the first thing inside the item.
+                    Its side: class="item img-top" (default) | img-bottom | img-left | img-right
+          Hide      delete any line (title, badge, tagline, details, link-btn, foot), or add the hidden attribute to it.
+          Restyle   add style="..." to the item or to any part, e.g. <article class="item" style="background:#fff8e1;max-height:300px">
+          New text  add <p class="tagline">...</p> or <p class="foot">...</p> inside .body.
+      
+
+-->
