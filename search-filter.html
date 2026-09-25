@@ -13,7 +13,9 @@
    colors/sizes, page layout, buttons and inputs, the search/filter panel, the toolbar above the
    grid, then the item boxes themselves. Colors, fonts, and sizes used in several places are kept
    as variables at the very top, under COLORS AND SIZES, so changing one value there updates every
-   element that uses it. */
+   element that uses it. The order below: colors/sizes, the thin link bar at the top of the window,
+   page layout, buttons and inputs, the search/filter panel, the toolbar above the grid, then the
+   item boxes themselves. */
 
 /* ==================== COLORS AND SIZES ==================== */
 :root{
@@ -22,7 +24,7 @@
 
   /* Page and item box sizes (desktop) */
   --page-max:1800px;        /* "none" = whole window width, or e.g. 1400px */
-  --card-min:230px;       /* narrowest an item box gets; more boxes fit per row when this is smaller */
+  --card-min:120px;       /* narrowest an item box gets; more boxes fit per row when this is smaller */
   --card-gap:14px;
   --card-min-h:0px;       /* shortest / tallest an item box can be, e.g. 220px and 380px */
   --card-max-h:none;
@@ -43,6 +45,17 @@
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:var(--page-max);margin:0 auto;padding:32px 20px 64px}
+
+/* ==================== SITE HEADER (page links) ====================
+   A thin bar of links to your other pages, pinned to the top of the browser window (not just the
+   top of this page) so it stays visible while scrolling. To add, remove, or rename a link, edit the
+   <nav> markup in the body - nothing here needs to change for that. */
+.site-nav{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+.site-nav-inner{max-width:var(--page-max);margin:0 auto;padding:10px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.site-nav .brand{font-weight:600;margin-right:auto;color:inherit;text-decoration:none}
+.site-nav a{padding:6px 12px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:.9375rem}
+.site-nav a:hover{color:var(--ink);background:var(--tint)}
+.site-nav a[aria-current="page"]{color:var(--ink);background:var(--tint);font-weight:600}
 h1{margin:0;font-size:2rem;line-height:1.15;letter-spacing:-.02em}
 h2{margin:0 0 4px;font-size:1rem}
 .sub,.hint{color:var(--muted);margin:0}
@@ -125,6 +138,22 @@ a.item:hover .link-btn{background:var(--accent);color:var(--on-accent)}
 </head>
 
 <body>
+<!-- ============ SITE HEADER ============
+  Links to your other pages. Styled by .site-nav (the bar) and .site-nav a (each link) in the CSS
+  above. To add a page, copy an <a> line and edit its href and text. Give the link that matches the
+  page you're on aria-current="page" (already set below on "Plants") so it's highlighted; remove that
+  attribute from a link once it no longer matches. The "Plant finder" brand text on the left can link
+  home, or be plain text - delete its href to make it non-clickable. -->
+<nav class="site-nav" aria-label="Site">
+  <div class="site-nav-inner">
+    <a href="index.html">Home</a>
+    <a href="years.html">Award Years</a>
+    <a href="films.html">Films</a>
+    <a href="nominees.html">Nominees</a>
+    <a href="ballots.html">Ballots</a>
+  </div>
+</nav>
+
 <div class="wrap">
   <!-- Page heading: styled by h1, .sub, and .wrap (page width, outer margins) in the CSS above. -->
   <header>
@@ -178,7 +207,41 @@ a.item:hover .link-btn{background:var(--accent);color:var(--on-accent)}
         </div>
       </div>
 
+      <!-- ============ ITEMS ============
+        Styled by: .grid (the grid itself - column width comes from the --card-min variable up top),
+        .item (each box), .body (its padding and inner spacing), .media (the picture area - size
+        from --side-img-w for img-left/img-right), .title/.badge/.tagline/.details/.link-btn/.foot
+        (the text pieces inside).
+
+        To add an item, copy one block below and edit it. Every item needs class="item" and these data attributes:
+          data-name       used by the A–Z sort
+          data-keywords   hidden exact-match keywords for the search bar, separated by |
+          data-category, data-light, data-water, data-pet-safe   the values the filters offer (separate several with |)
+          data-price      used by the Price sort
+        (Filters and sorts are set up in the script. A new data-... attribute only becomes a filter once it is listed in FILTER_FIELDS.)
+
+        Customizing one item, all done right here:
+          Link      use <a class="item" href="page.html"> and the whole box becomes a link. Use <article> for no link.
+          Picture   add <div class="media"><img src="images/x.jpg" alt="..."></div> as the first thing inside the item.
+                    Its side: class="item img-top" (default) | img-bottom | img-left | img-right
+          Hide      delete any line (title, badge, tagline, details, link-btn, foot), or add the hidden attribute to it.
+          Restyle   add style="..." to the item or to any part, e.g. <article class="item" style="background:#fff8e1;max-height:300px">
+          New text  add <p class="tagline">...</p> or <p class="foot">...</p> inside .body.
+      -->
       <div id="grid" class="grid">
+
+        <a class="item" href="films/zootopia-2.html" data-name="Zootopia 2" data-keywords="zootopia|2|zootopia 2">
+          <div class="media"><img src="files/film-posters/zootopia-2-poster.jpg" alt="Zootopia 2"></div>
+          <div class="body">
+            <div class="line"><h3 class="title">Zootopia 2</h3></div>
+          </div>
+        </a>
+        <a class="item" href="" data-name="" data-keywords="">
+          <div class="media"><img src="" alt=""></div>
+          <div class="body">
+            <div class="line"><h3 class="title"></h3></div>
+          </div>
+        </a>
 
         <a class="item" href="#" style="border:2px solid var(--accent)"
            data-name="Monstera" data-keywords="climber|large-leaf|tropical|statement" data-category="Foliage" data-light="Medium" data-water="Moderate" data-pet-safe="No" data-price="34">
