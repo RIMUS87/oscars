@@ -48,10 +48,15 @@ td {
     overflow-wrap: break-word;
     text-wrap: wrap;
     position: relative;
+    min-height: 3em;
+    padding: 0.2em;
 }
 h3 {
     justify-self: center;
     font-size: 200%;
+}
+.bars {
+    height: 0.5em;
 }
 .voted {
     background-image: url('../files/vote.png');
