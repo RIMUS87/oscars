@@ -59,7 +59,7 @@ h3 {
     height: 0.5em;
 }
 .voted {
-    background-image: url('../files/vote.png');
+    background-image: url('files/vote.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 2.2em;
