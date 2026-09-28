@@ -40,6 +40,8 @@ th {
     font-weight: bold;
     overflow-wrap: break-word;
     text-wrap: wrap;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 td {
     border: 1px solid black;
@@ -90,7 +92,8 @@ h3 {
     text-align: center;
     table-layout: fixed;
     min-width: 25%;
-    max-width: fit-content;
+    width: auto;
+    max-width: 75%;
     margin: 3vh 10%;
     border-radius: 10px;
     justify-self: center;
