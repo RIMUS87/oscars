@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Players | Albert</title>
+        <link rel="stylesheet" href="../player-profile.css" type="text/css">
+        <link rel="icon" href="../files/trilobite.png" sizes="348x348" type="image/png">
+        <script src="../player-profile.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <a class="header-links" href="../years.html">Award Years</a>
+            <a class="header-links" href="../films.html">Films</a>
+            <a class="header-links" href="../index.html">Home</a>
+            <a class="header-links" href="../nominees.html">Nominees</a>
+            <a class="header-links" href="../ballots.html">Ballots</a>
+            <a class="header-links" href="../search-filter.html">Search & Filter</a>
+        </header>
+        <div id="bio">
+            <img id=profile-picture src="../files/nominee-profiles/void-pic1.png">
+            <p id="name">Albert</p>
+        </div>
+        <!-- Tab Buttons -->
+        <div class="tab-header">
+        <button class="tab-btn active" onclick="switchTab(event, 'home')">Competition Stats</button>
+        <button class="tab-btn" onclick="switchTab(event, 'about')">Ballots</button>
+        <button class="tab-btn" onclick="switchTab(event, 'contact')">Watched Films</button>
+        </div>
+        <!-- Tab Content Panels -->
+        <div id="home" class="tab-content active">
+            <h3>Competition Stats</h3>
+            <p>
+                <table class="stats">
+                    <tr>
+                        <th colspan="3">2026</th>
+                    </tr>
+                    <tr>
+                        <td>8th Place</td>
+                        <td>7 Categories</td>
+                        <td>19 Points</td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">2025</th>
+                    </tr>
+                    <tr>
+                        <td>3rd Place</td>
+                        <td>7 Categories</td>
+                        <td>11 Points</td>
+                    </tr>
+                </table>
+            </p>
+            <h3>Category Stats</h3>
+            <p>
+                <table class="stats">
+                    <tr>
+                        <th colspan="3">Prediction Success Rate</th>
+                    </tr>
+                    <tr>
+                        <td>Best Picture</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Actor in a Leading Role</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Actress in a Leading Role</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Actor in a Supporting Role</td>
+                        <td>2 of 2</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>Actress in a Supporting Role</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Directing</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Writing (Original Screenplay)</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Writing (Adapted Screenplay)</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Cinematography</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Film Editing</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Casting</td>
+                        <td>1 of 1</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>Production Design</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Costume Design</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Makeup and Hairstyling</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Visual Effects</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Sound</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Music (Original Score)</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Music (Original Song)</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>International Feature Film</td>
+                        <td>2 of 2</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>Animated Feature Film</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Documentary Feature Film</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Live Action Short Film</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Animated Short Film</td>
+                        <td>0 of 2</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Documentary Short Film</td>
+                        <td>1 of 2</td>
+                        <td>50%</td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+        <div id="about" class="tab-content">
+            <h3>2026</h3>
+            <p>
+                <table>
+                    <tr id="girder-top">
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Best Picture</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Bugonia</td>
+                        <td colspan="12">F1</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td class="voted" colspan="12">Marty Supreme</td>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Secret Agent</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actor in a Leading Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Ethan Hawke<br>(Blue Moon)</td>
+                        <td colspan="12">Leonardo DiCaprio<br>(One Battle after Another)</td>
+                        <td class="winner" colspan="12">Michael B. Jordan<br>(Sinners)</td>
+                        <td class="voted" colspan="12">Timothée Chalamet<br>(Marty Supreme)</td>
+                        <td colspan="12">Wagner Moura<br>(The Secret Agent)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Leading Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Emma Stone<br>(Bugonia)</td>
+                        <td class="winner" colspan="12">Jessie Buckley<br>(Hamnet)</td>
+                        <td class="voted" colspan="12">Kate Hudson<br>(Song Sung Blue)</td>
+                        <td colspan="12">Renate Reinsve<br>(Sentimental Value)</td>
+                        <td colspan="12">Rose Byrne<br>(If I Had Legs I'd Kick You)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actor in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Benicio Del Toro<br>(One Battle after Another)</td>
+                        <td colspan="12">Delroy Lindo<br>(Sinners)</td>
+                        <td colspan="12">Jacob Elordi<br>(Frankenstein)</td>
+                        <td class="winner voted" colspan="12">Sean Penn<br>(One Battle after Another)</td>
+                        <td colspan="12">Stellan Skarsgård<br>(Sentimental Value)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td class="winner voted" colspan="12">Amy Madigan<br>(Weapons)</td>
+                        <td colspan="12">Elle Fanning<br>(Sentimental Value)</td>
+                        <td colspan="12">Inga Ibsdotter Lilleaas<br>(Sentimental Value)</td>
+                        <td colspan="12">Teyana Taylor<br>(One Battle after Another)</td>
+                        <td colspan="12">Wunmi Mosaku<br>(Sinners)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Directing</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Chloé Zhao<br>(Hamnet)</td>
+                        <td colspan="12">Joachim Trier<br>(Sentimental Value)</td>
+                        <td colspan="12">Josh Safdie<br>(Marty Supreme)</td>
+                        <td class="winner voted" colspan="12">Paul Thomas Anderson<br>(One Battle after Another)</td>
+                        <td colspan="12">Ryan Coogler<br>(Sinners)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Original Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Blue Moon</td>
+                        <td colspan="12">It Was Just an Accident</td>
+                        <td class="voted" colspan="12">Marty Supreme</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td class="winner" colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Adapted Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Bugonia</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td class="winner voted" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Cinematography</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td class="voted" colspan="12">One Battle after Another</td>
+                        <td class="winner" colspan="12">Sinners</td>
+                        <td colspan="12">Train Dreams</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Film Editing</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">F1</td>
+                        <td class="voted" colspan="12">Marty Supreme</td>
+                        <td class="winner" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sentimental Value</td>
+                        <td colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Casting</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td class="winner voted" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Secret Agent</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Production Design</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td class="voted" colspan="12">Marty Supreme</td>
+                        <td colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Costume Design</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Avatar: Fire and Ash</td>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">Marty Supreme</td>
+                        <td colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Makeup and Hairstyling</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Frankenstein</td>
+                        <td colspan="12">Kokuho</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Smashing Machine</td>
+                        <td class="voted" colspan="12">The Ugly Stepsister</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Visual Effects</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Avatar: Fire and Ash</td>
+                        <td colspan="12">F1</td>
+                        <td class="voted" colspan="12">Jurassic World Rebirth</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">The Lost Bus</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Sound</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">F1</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td class="voted" colspan="12">One Battle after Another</td>
+                        <td colspan="12">Sinners</td>
+                        <td colspan="12">Sirāt</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Score)</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Bugonia</td>
+                        <td colspan="12">Frankenstein</td>
+                        <td colspan="12">Hamnet</td>
+                        <td colspan="12">One Battle after Another</td>
+                        <td class="winner" colspan="12">Sinners</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Song)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Dear Me<br>(Diane Warren: Relentless)</td>
+                        <td class="winner" colspan="12">Golden<br>(KPop Demon Hunters)</td>
+                        <td colspan="12">I Lied To You<br>(Sinners)</td>
+                        <td class="voted" colspan="12">Sweet Dreams Of Joy<br>(Viva Verdi!)</td>
+                        <td colspan="12">Train Dreams<br>(Train Dreams)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">International Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">It Was Just an Accident</td>
+                        <td class="winner voted" colspan="12">Sentimental Value</td>
+                        <td colspan="12">Sirāt</td>
+                        <td colspan="12">The Secret Agent</td>
+                        <td colspan="12">The Voice of Hind Rajab</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Arco</td>
+                        <td colspan="12">Elio</td>
+                        <td class="winner" colspan="12"><a href="../films/kpop-demon-hunters.html">KPop Demon Hunters</a></td>
+                        <td colspan="12">Little Amélie or the Character of Rain</td>
+                        <td class="voted" colspan="12"><a href="../films/zootopia-2.html">Zootopia 2</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Come See Me in the Good Light</td>
+                        <td colspan="12">Cutting through Rocks</td>
+                        <td class="winner" colspan="12">Mr. Nobody against Putin</td>
+                        <td colspan="12">The Alabama Solution</td>
+                        <td colspan="12">The Perfect Neighbor</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Live Action Short Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12"><a href="../films/a-friend-of-dorothy.html">A Friend of Dorothy</a></td>
+                        <td colspan="12">Butcher's Stain</td>
+                        <td colspan="12">Jane Austen's Period Drama</td>
+                        <td class="winner voted" colspan="12">The Singers</td>
+                        <td class="winner" colspan="12">Two People Exchanging Saliva</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Short Film</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Butterfly</td>
+                        <td colspan="12">Forevergreen</td>
+                        <td colspan="12">Retirement Plan</td>
+                        <td class="winner" colspan="12">The Girl Who Cried Pearls</td>
+                        <td colspan="12">The Three Sisters</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Short Film</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">All the Empty Rooms</td>
+                        <td colspan="12">Armed Only with a Camera: The Life and Death of Brent Renaud</td>
+                        <td colspan="12">Children No More: "Were and Are Gone"</td>
+                        <td class="voted" colspan="12">Perfectly a Strangeness</td>
+                        <td colspan="12">The Devil Is Busy</td>
+                    </tr>
+                    <tr id="girder-bottom">
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                    </tr>
+                </table>
+                <h3>2025</h3>
+                <table>
+                    <tr id="girder-top">
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Best Picture</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">A Complete Unknown</td>
+                        <td class="winner" colspan="12">Anora</td>
+                        <td colspan="12">Conclave</td>
+                        <td colspan="12">Dune: Part Two</td>
+                        <td colspan="12">Emilia Pérez</td>
+                    </tr>
+                    <tr>
+                        <td colspan="12">I'm Still Here</td>
+                        <td colspan="12">Nickel Boys</td>
+                        <td colspan="12">The Brutalist</td>
+                        <td colspan="12">The Substance</td>
+                        <td colspan="12">Wicked</td>
+                    </tr>
+                    <th colspan="60">Actor in a Leading Role</th>
+                    <tr>
+                        <td class="winner" colspan="12">Adrien Brody<br>(The Brutalist)</td>
+                        <td colspan="12">Colman Domingo<br>(Sing Sing)</td>
+                        <td colspan="12">Ralph Fiennes<br>(Conclave)</td>
+                        <td colspan="12">Sebastian Stan<br>(The Apprentice)</td>
+                        <td class="voted" colspan="12">Timothée Chalamet<br>(A Complete Unknown)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Leading Role</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Cynthia Erivo<br>(Wicked)</td>
+                        <td colspan="12">Demi Moore<br>(The Substance)</td>
+                        <td colspan="12">Fernanda Torres<br>(I'm Still Here)</td>
+                        <td colspan="12">Karla Sofía Gascón<br>(Emilia Pérez)</td>
+                        <td class="winner" colspan="12">Mikey Madison<br>(Anora)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actor in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Edward Norton<br>(A Complete Unknown)</td>
+                        <td colspan="12">Guy Pearce<br>(The Brutalist)</td>
+                        <td colspan="12">Jeremy Strong<br>(The Apprentice)</td>
+                        <td class="winner voted" colspan="12">Kieran Culkin<br>(A Real Pain)</td>
+                        <td colspan="12">Yura Borisov<br>(Anora)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Actress in a Supporting Role</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Ariana Grande<br>(Wicked)</td>
+                        <td colspan="12">Felicity Jones<br>(The Brutalist)</td>
+                        <td colspan="12">Isabella Rossellini<br>(Conclave)</td>
+                        <td colspan="12">Monica Barbaro<br>(A Complete Unknown)</td>
+                        <td class="winner" colspan="12">Zoe Saldaña<br>(Emilia Pérez)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Directing</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Brady Corbet<br>(The Brutalist)</td>
+                        <td colspan="12">Coralie Fargeat<br>(The Substance)</td>
+                        <td colspan="12">Jacques Audiard<br>(Emilia Pérez)</td>
+                        <td colspan="12">James Mangold<br>(A Complete Unknown)</td>
+                        <td class="winner" colspan="12">Sean Baker<br>(Anora)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Original Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Anora</td>
+                        <td colspan="12">A Real Pain</td>
+                        <td colspan="12">September 5</td>
+                        <td class="voted" colspan="12">The Brutalist</td>
+                        <td colspan="12">The Substance</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Writing (Adapted Screenplay)</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">A Complete Unknown</td>
+                        <td class="winner" colspan="12">Conclave</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td colspan="12">Nickel Boys</td>
+                        <td colspan="12">Sing Sing</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Cinematography</th>
+                    </tr>
+                    <tr>
+                        <td class="voted" colspan="12">Dune: Part Two</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td colspan="12">Maria</td>
+                        <td colspan="12">Nosferatu</td>
+                        <td class="winner" colspan="12">The Brutalist</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Film Editing</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Anora</td>
+                        <td colspan="12">Conclave</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td colspan="12">The Brutalist</td>
+                        <td class="voted" colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Production Design</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Conclave</td>
+                        <td class="voted" colspan="12">Dune: Part Two</td>
+                        <td colspan="12">Nosferatu</td>
+                        <td colspan="12">The Brutalist</td>
+                        <td class="winner" colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Costume Design</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">A Complete Unknown</td>
+                        <td colspan="12">Conclave</td>
+                        <td class="voted" colspan="12">Gladiator II</td>
+                        <td colspan="12">Nosferatu</td>
+                        <td class="winner" colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Makeup and Hairstyling</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">A Different Man</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td class="voted" colspan="12">Nosferatu</td>
+                        <td class="winner" colspan="12">The Substance</td>
+                        <td colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Visual Effects</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Alien: Romulus</td>
+                        <td colspan="12">Better Man</td>
+                        <td class="winner voted" colspan="12">Dune: Part Two</td>
+                        <td colspan="12">Kingdom of the Planet of the Apes</td>
+                        <td colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Sound</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">A Complete Unknown</td>
+                        <td class="winner voted" colspan="12">Dune: Part Two</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td colspan="12">The Wild Robot</td>
+                        <td colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Score)</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Conclave</td>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td class="winner voted" colspan="12">The Brutalist</td>
+                        <td colspan="12">The Wild Robot</td>
+                        <td colspan="12">Wicked</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Music (Original Song)</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">El Mal<br>(Emilia Pérez)</td>
+                        <td colspan="12">Like A Bird<br>(Sing Sing)</td>
+                        <td colspan="12">Mi Camino<br>(Emilia Pérez)</td>
+                        <td class="voted" colspan="12">Never Too Late<br>(Elton John: Never Too Late)</td>
+                        <td colspan="12">The Journey<br>(The Six Triple Eight)</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">International Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Emilia Pérez</td>
+                        <td colspan="12">Flow</td>
+                        <td class="winner voted" colspan="12">I'm Still Here</td>
+                        <td colspan="12">The Girl with the Needle</td>
+                        <td colspan="12">The Seed of the Sacred Fig</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td class="winner" colspan="12">Flow</td>
+                        <td colspan="12">Inside Out 2</td>
+                        <td colspan="12">Memoir of a Snail</td>
+                        <td class="voted" colspan="12">The Wild Robot</td>
+                        <td colspan="12">Wallace & Gromit: Vengeance Most Fowl</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Feature Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Black Box Diaries</td>
+                        <td class="winner voted" colspan="12">No Other Land</td>
+                        <td colspan="12">Porcelain War</td>
+                        <td colspan="12">Soundtrack to a Coup d'Etat</td>
+                        <td colspan="12">Sugarcane</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Live Action Short Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">A Lien</td>
+                        <td colspan="12">Anuja</td>
+                        <td class="winner" colspan="12">I'm Not a Robot</td>
+                        <td colspan="12">The Last Ranger</td>
+                        <td class="voted" colspan="12">The Man Who Could Not Remain Silent</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Animated Short Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Beautiful Men</td>
+                        <td class="winner" colspan="12">In the Shadow of the Cypress</td>
+                        <td colspan="12">Magic Candies</td>
+                        <td class="voted" colspan="12">Wander to Wonder</td>
+                        <td colspan="12">Yuck!</td>
+                    </tr>
+                    <tr>
+                        <th colspan="60">Documentary Short Film</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">Death by Numbers</td>
+                        <td colspan="12">I Am Ready, Warden</td>
+                        <td colspan="12">Incident</td>
+                        <td colspan="12">Instruments of a Beating Heart</td>
+                        <td class="winner voted" colspan="12">The Only Girl in the Orchestra</td>
+                    </tr>
+                    <tr id="girder-bottom">
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                        <td class="bars"></td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+        <div id="contact" class="tab-content">
+            <p>
+                <div class="button-container">
+                    <button onclick="changeOrder('alphabetical')">Alphabetical</button>
+                    <button onclick="changeOrder('year')">Year</button>
+                    <button onclick="changeOrder('awards')">Awards</button>
+                </div>
+                <div id="imageGrid" class="grid-container">
+                    <div class="grid-item" data-id="">
+                        <a href="../films/.html"><abbr title=""><img src="../files/film-posters/"></abbr></a>
+                    </div>
+                </div>
+            </p>
+        </div>
+    </body>
+</html>
