@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mirror Text Example</title>
+    <style>
+        #watched {
+            border: 5px solid gold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. The target element that will have its text changed -->
+<p id="source-title">not watched</p>
+
+<!-- 2. The button that triggers the action -->
+<button id="myButton">Mark Watched</button>
+
+<script>
+  // 3. Select both elements using JavaScript
+  const textElement = document.getElementById("source-title");
+  const buttonElement = document.getElementById("myButton");
+
+  // 4. Add a click event listener to the button
+  buttonElement.addEventListener("click", function() {
+    // 5. Update the text content of the target element
+    textElement.textContent = "watched";
+  });
+</script>
+
+
+
+
+
+    <!-- The source element containing the text -->
+<h2 id="source-title">not watched</h2>
+
+<!-- The target element where you want the matching ID -->
+<div id="target-div">This container will get a matching ID.</div>
+
+<script>
+  // 1. Select both elements
+  const textElement = document.getElementById("source-title");
+  const buttonElement = document.getElementById("myButton");
+  const sourceElement = document.getElementById('source-title');
+  const targetElement = document.getElementById('target-div');
+
+  // 2. Get the text and format it into a valid ID format (slugify)
+  // This converts "My Awesome Section" to "my-awesome-section"
+  const formattedId = sourceElement.textContent
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-'); // Replaces spaces with hyphens
+
+  // 3. Assign the new ID to the target element
+  targetElement.id = formattedId;
+
+  console.log(targetElement); // Output will show: id="my-awesome-section"
+</script>
+
+</body>
+</html>

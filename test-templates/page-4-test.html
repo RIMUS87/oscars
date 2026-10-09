@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #watched {
+                border: 5px solid gold;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- The button that triggers the change -->
+<button id="change-text-btn">Change Text and ID</button>
+
+<!-- The source element containing the text -->
+<h2 id="source-title">Not Watched</h2>
+
+<!-- The target element where you want the matching ID -->
+<div id="target-div">This container's ID will update automatically.</div>
+
+<script>
+  const button = document.getElementById('change-text-btn');
+  const sourceElement = document.getElementById('source-title');
+  const targetElement = document.getElementById('target-div');
+
+  // Function to format text into a valid HTML ID (slugify)
+  function updateIdFromText() {
+    const formattedId = sourceElement.textContent
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-'); // Replaces spaces with hyphens
+    
+    targetElement.id = formattedId;
+    
+    // Optional: Log to the console so you can see the live change
+    console.log(`Target div ID is now: "${targetElement.id}"`);
+  }
+
+  // Run once on page load to set the initial ID
+  updateIdFromText();
+
+  // Listen for the button click
+  button.addEventListener('click', () => {
+    // 1. Change the text in the source element
+    sourceElement.textContent = "Watched";
+    
+    // 2. Automatically update the target element's ID to match
+    updateIdFromText();
+  });
+</script>
+    </body>
+</html>
