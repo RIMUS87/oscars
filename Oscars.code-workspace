@@ -3,6 +3,9 @@
 		{
 			"name": "oscars",
 			"path": "."
+		},
+		{
+			"path": "../new-backend"
 		}
 	],
 	"settings": {
