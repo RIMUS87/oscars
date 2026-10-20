@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Change these to restyle the whole page */
+  :root {
+    --bg: #e9eff2;
+    --panel: #14323a;
+    --panel-text: #e4f0ee;
+    --surface: #ffffff;
+    --ink: #14212b;
+    --muted: #55656f;
+    --line: #c3d0d6;
+    --accent: #1f6b64;
+    --accent-dark: #17524d;
+    --error: #b3261e;
+    --ok: #1f6b64;
+    --head: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+    --body: "Source Sans 3", "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 1.0625rem/1.55 var(--body);
+  }
+  .page { min-height: 100%; display: grid; grid-template-columns: minmax(280px, 5fr) 7fr; }
+
+  .intro {
+    background: var(--panel); color: var(--panel-text);
+    padding: clamp(2rem, 6vw, 4.5rem); display: flex; flex-direction: column; justify-content: space-between; gap: 3rem;
+  }
+  .brand { font: 800 1.25rem var(--head); letter-spacing: .01em; color: #fff; text-decoration: none; }
+  .intro h1 { font: 800 clamp(2rem, 4vw, 3.1rem)/1.08 var(--head); margin: 0 0 1rem; color: #fff; }
+  .intro p { margin: 0; max-width: 34ch; color: #b9d3cf; }
+
+  main { display: flex; align-items: center; justify-content: center; padding: clamp(1.5rem, 5vw, 4rem); }
+  .card { width: 100%; max-width: 30rem; }
+  .card h2 { font: 800 1.75rem/1.2 var(--head); margin: 0 0 .35rem; }
+  .sub { margin: 0 0 1.75rem; color: var(--muted); }
+  .sub a, .foot a { color: var(--accent-dark); font-weight: 600; }
+
+  .field { margin-bottom: 1.1rem; }
+  label { display: block; font-weight: 600; margin-bottom: .3rem; }
+  .control { position: relative; }
+  input[type=text], input[type=email], input[type=password] {
+    width: 100%; font: inherit; color: var(--ink); background: var(--surface);
+    border: 1.5px solid var(--line); border-radius: 6px; padding: .7rem .85rem;
+  }
+  input.has-toggle { padding-right: 4.5rem; }
+  input:focus-visible, button:focus-visible, .check input:focus-visible {
+    outline: 3px solid #7fc4bb; outline-offset: 2px; border-color: var(--accent);
+  }
+  input[aria-invalid=true] { border-color: var(--error); }
+  .toggle {
+    position: absolute; right: .35rem; top: 50%; transform: translateY(-50%);
+    background: none; border: 0; font: 600 .9rem var(--body); color: var(--accent-dark);
+    padding: .4rem .55rem; cursor: pointer; border-radius: 4px;
+  }
+  .msg { min-height: 1.25rem; margin: .3rem 0 0; font-size: .92rem; color: var(--error); }
+
+  .rules { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .15rem .75rem; font-size: .92rem; color: var(--muted); }
+  .rules li::before { content: "\25CB"; display: inline-block; width: 1.3em; }
+  .rules li.met { color: var(--ok); }
+  .rules li.met::before { content: "\2713"; font-weight: 700; }
+
+  .check { display: flex; gap: .6rem; align-items: flex-start; margin: 1.4rem 0 .2rem; }
+  .check input { width: 1.15rem; height: 1.15rem; margin-top: .25rem; accent-color: var(--accent); flex: none; }
+  .check label { font-weight: 400; margin: 0; }
+
+  .submit {
+    width: 100%; margin-top: 1rem; font: 800 1.05rem var(--head); color: #fff; background: var(--accent);
+    border: 0; border-radius: 6px; padding: .9rem 1rem; cursor: pointer;
+  }
+  .submit:hover { background: var(--accent-dark); }
+  .submit[disabled] { opacity: .6; cursor: progress; }
+  .status { margin-top: 1rem; padding: .85rem 1rem; border-radius: 6px; display: none; }
+  .status.show { display: block; }
+  .status.ok { background: #dcefec; color: #123f3a; }
+  .status.bad { background: #f7dedb; color: #7a1812; }
+  .foot { margin-top: 1.5rem; color: var(--muted); font-size: .95rem; }
+
+  @media (max-width: 820px) {
+    .page { grid-template-columns: 1fr; }
+    .intro { padding: 1.5rem; gap: 1rem; }
+    .intro p { display: none; }
+    .intro h1 { font-size: 1.6rem; margin: 0; }
+    .rules { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="intro">
+    <a class="brand" href="/">Your Site</a>
+    <div>
+      <h1>Make an account in under a minute.</h1>
+      <p>One account for everything on the site. You can change your details or delete the account at any time.</p>
+    </div>
+  </aside>
+
+  <main>
+    <div class="card">
+      <h2>Create your account</h2>
+      <p class="sub">Already registered? <a href="login.html">Log in</a></p>
+
+      <form id="reg" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+          <p class="msg" id="name-msg" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+          <p class="msg" id="email-msg" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="control">
+            <input type="password" id="password" name="password" class="has-toggle" autocomplete="new-password" aria-describedby="rules" required>
+            <button type="button" class="toggle" data-target="password" aria-label="Show password">Show</button>
+          </div>
+          <ul class="rules" id="rules">
+            <li data-rule="len">At least 8 characters</li>
+            <li data-rule="upper">An uppercase letter</li>
+            <li data-rule="lower">A lowercase letter</li>
+            <li data-rule="num">A number</li>
+          </ul>
+          <p class="msg" id="password-msg" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="confirm">Confirm password</label>
+          <div class="control">
+            <input type="password" id="confirm" name="confirm" class="has-toggle" autocomplete="new-password" required>
+            <button type="button" class="toggle" data-target="confirm" aria-label="Show confirmation password">Show</button>
+          </div>
+          <p class="msg" id="confirm-msg" aria-live="polite"></p>
+        </div>
+
+        <div class="check">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">I agree to the <a href="terms.html">terms of use</a> and <a href="privacy.html">privacy policy</a>.</label>
+        </div>
+        <p class="msg" id="terms-msg" aria-live="polite"></p>
+
+        <button class="submit" type="submit" id="submit">Create account</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </form>
+
+      <p class="foot">Need help? <a href="contact.html">Contact us</a></p>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Where the form data is sent. Point this at your own backend or form service.
+  // Leave empty to test the page without sending anything.
+  const ENDPOINT = "";
+
+  const form = document.getElementById("reg");
+  const $ = id => document.getElementById(id);
+  const rules = {
+    len:   v => v.length >= 8,
+    upper: v => /[A-Z]/.test(v),
+    lower: v => /[a-z]/.test(v),
+    num:   v => /\d/.test(v)
+  };
+
+  function setError(id, text) {
+    const input = $(id);
+    $(id + "-msg").textContent = text || "";
+    if (input.type !== "checkbox") input.setAttribute("aria-invalid", text ? "true" : "false");
+  }
+
+  function checkRules() {
+    const v = $("password").value;
+    let all = true;
+    document.querySelectorAll("#rules li").forEach(li => {
+      const ok = rules[li.dataset.rule](v);
+      li.classList.toggle("met", ok);
+      if (!ok) all = false;
+    });
+    return all;
+  }
+
+  const validators = {
+    name:     () => $("name").value.trim() ? "" : "Enter your full name.",
+    email:    () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($("email").value.trim()) ? "" : "Enter a valid email address, like name@example.com.",
+    password: () => checkRules() ? "" : "Your password needs to meet all four requirements above.",
+    confirm:  () => $("confirm").value && $("confirm").value === $("password").value ? "" : "The passwords don't match.",
+    terms:    () => $("terms").checked ? "" : "Agree to the terms to create an account."
+  };
+
+  Object.keys(validators).forEach(id => {
+    const el = $(id);
+    el.addEventListener("blur", () => { if (el.dataset.touched) setError(id, validators[id]()); });
+    el.addEventListener("input", () => {
+      el.dataset.touched = "1";
+      if (id === "password") { checkRules(); if ($("confirm").dataset.touched) setError("confirm", validators.confirm()); }
+      if ($(id + "-msg").textContent) setError(id, validators[id]());
+    });
+  });
+  $("terms").addEventListener("change", () => setError("terms", validators.terms()));
+
+  document.querySelectorAll(".toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const input = $(btn.dataset.target);
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      btn.textContent = show ? "Hide" : "Show";
+      btn.setAttribute("aria-label", (show ? "Hide " : "Show ") + (btn.dataset.target === "confirm" ? "confirmation password" : "password"));
+    });
+  });
+
+  function showStatus(kind, text) {
+    const s = $("status");
+    s.className = "status show " + kind;
+    s.textContent = text;
+  }
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    let firstBad = null;
+    for (const id of Object.keys(validators)) {
+      const err = validators[id]();
+      setError(id, err);
+      if (err && !firstBad) firstBad = $(id);
+    }
+    if (firstBad) { firstBad.focus(); return; }
+
+    const btn = $("submit");
+    btn.disabled = true; btn.textContent = "Creating account…";
+    try {
+      if (ENDPOINT) {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: $("name").value.trim(), email: $("email").value.trim(), password: $("password").value })
+        });
+        if (!res.ok) throw new Error(res.status === 409 ? "exists" : "failed");
+      } else {
+        console.warn("register.html: ENDPOINT is empty, so nothing was sent.");
+      }
+      form.reset();
+      document.querySelectorAll("#rules li").forEach(li => li.classList.remove("met"));
+      showStatus("ok", "Account created. Check your email to confirm your address.");
+    } catch (err) {
+      showStatus("bad", err.message === "exists"
+        ? "An account with this email already exists. Log in instead."
+        : "We couldn't create your account. Check your connection and try again.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Create account";
+    }
+  });
+</script>
+</body>
+</html>
