@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gold &amp; White Page Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --white:#FFFFFF;
+  --ivory:#FCFAF4;
+  --champagne:#F3E9CF;
+  --gold:#B8913A;
+  --gold-deep:#8A6A1F;
+  --gold-soft:#D9BE7A;
+  --ink:#2A2418;
+  --muted:#6F6650;
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Jost", "Helvetica Neue", Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+
+/* Navigation */
+.nav{background:var(--white);border-bottom:1px solid var(--gold-soft)}
+.nav-inner{max-width:1040px;margin:0 auto;padding:32px 24px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.brand{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--gold-deep);text-decoration:none;letter-spacing:.02em}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+.nav li a{text-decoration:none;color:var(--muted);padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.nav li a:hover{color:var(--gold-deep);border-color:var(--gold)}
+
+/* Header */
+.hero{background:linear-gradient(180deg,var(--white) 0%,var(--champagne) 100%);border-bottom:1px solid var(--gold-soft)}
+.hero-inner{max-width:1040px;margin:0 auto;padding:72px 24px 68px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px}
+.avatar{flex:none;width:212px;border-radius:4px;padding:6px;background:linear-gradient(135deg,var(--gold-soft),var(--gold) 50%,var(--gold-deep));box-shadow:0 10px 30px rgba(138,106,31,.25)}
+.avatar img{display:block;width:100%;aspect-ratio:2/3;height:auto;border-radius:2px;border:5px solid var(--white);object-fit:cover;background:var(--ivory)}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.1;margin:0 0 12px;color:var(--ink)}
+.hero p{margin:0 auto;max-width:52ch;color:var(--muted);font-size:1.05rem}
+
+/* Tabs */
+.wrap{max-width:1040px;margin:0 auto;padding:56px 24px 96px;text-align:center}
+.tablist{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:44px;border-bottom:1px solid var(--gold-soft)}
+.tab{font:inherit;font-weight:500;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:12px 22px;color:var(--muted);cursor:pointer;transition:color .2s,background .2s}
+.tab:hover{color:var(--gold-deep);background:var(--champagne)}
+.tab[aria-selected="true"]{color:var(--gold-deep);border-bottom-color:var(--gold);background:var(--white)}
+.panel[hidden]{display:none}
+
+/* Dropdown */
+.dd{position:relative;display:inline-block;margin-bottom:40px}
+.dd-btn{font:inherit;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:18px;min-width:260px;padding:12px 18px;background:var(--white);color:var(--ink);border:1px solid var(--gold);border-radius:4px;cursor:pointer;transition:box-shadow .2s}
+.dd-btn:hover{box-shadow:0 0 0 3px var(--champagne)}
+.dd-btn .caret{width:10px;height:10px;border-right:2px solid var(--gold-deep);border-bottom:2px solid var(--gold-deep);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.dd-btn[aria-expanded="true"] .caret{transform:rotate(225deg) translate(-2px,-2px)}
+.dd-menu{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;background:var(--white);border:1px solid var(--gold-soft);border-radius:4px;box-shadow:0 14px 32px rgba(42,36,24,.12)}
+.dd-menu[hidden]{display:none}
+.dd-menu button{font:inherit;width:100%;text-align:center;background:none;border:0;padding:10px 12px;border-radius:3px;color:var(--ink);cursor:pointer}
+.dd-menu button:hover{background:var(--champagne)}
+.dd-menu button[aria-current="true"]{color:var(--gold-deep);font-weight:500;background:var(--ivory)}
+
+/* Sections */
+.section[hidden]{display:none}
+.section{background:var(--white);border:1px solid var(--gold-soft);border-top:4px solid var(--gold);padding:40px 44px;max-width:760px;margin:0 auto}
+.section h2{font-family:var(--serif);font-size:1.9rem;font-weight:600;margin:0 0 10px;color:var(--gold-deep)}
+.section p{margin:0;color:var(--ink)}
+
+footer{border-top:1px solid var(--gold-soft);background:var(--white);text-align:center;padding:22px 24px;color:var(--muted);font-size:.92rem}
+
+@media (max-width:720px){
+  .hero-inner{padding-top:48px}
+  .nav ul{gap:28px}
+  .tablist{gap:8px}
+  .dd,.dd-btn{display:flex;width:100%}
+  .section{padding:22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="nav-inner">
+    <a class="brand" href="#top">Your Name</a>
+    <ul>
+      <li><a href="#top">Home</a></li>
+      <li><a href="#content">Portfolio</a></li>
+      <li><a href="#content">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div class="avatar">
+      <img alt="Profile picture placeholder" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect width='200' height='300' fill='%23FCFAF4'/%3E%3Ccircle cx='100' cy='115' r='42' fill='%23D9BE7A'/%3E%3Cpath d='M20 300c4-70 36-110 80-110s76 40 80 110z' fill='%23B8913A'/%3E%3C/svg%3E">
+    </div>
+    <div>
+      <h1>Your Title Goes Here</h1>
+      <p>A short line about who you are and what you do. Swap this text and the profile picture for your own.</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="content">
+  <div class="tablist" role="tablist" aria-label="Page tabs">
+    <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">About</button>
+    <button class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">Work</button>
+    <button class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">Resources</button>
+  </div>
+
+  <!-- Tab 1 -->
+  <section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+    <div class="dd">
+      <button class="dd-btn" aria-haspopup="true" aria-expanded="false"><span class="dd-label">Biography</span><span class="caret"></span></button>
+      <ul class="dd-menu" hidden>
+        <li><button data-target="1a">Biography</button></li>
+        <li><button data-target="1b">Experience</button></li>
+        <li><button data-target="1c">Education</button></li>
+      </ul>
+    </div>
+    <article class="section" data-id="1a"><h2>Biography</h2><p>Introduce yourself here. Share your background, what drives your work, and what visitors can expect from this page.</p></article>
+    <article class="section" data-id="1b" hidden><h2>Experience</h2><p>List your roles, responsibilities, and the achievements you are most proud of.</p></article>
+    <article class="section" data-id="1c" hidden><h2>Education</h2><p>Add degrees, certifications, and training that support your expertise.</p></article>
+  </section>
+
+  <!-- Tab 2 -->
+  <section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+    <div class="dd">
+      <button class="dd-btn" aria-haspopup="true" aria-expanded="false"><span class="dd-label">Featured projects</span><span class="caret"></span></button>
+      <ul class="dd-menu" hidden>
+        <li><button data-target="2a">Featured projects</button></li>
+        <li><button data-target="2b">Case studies</button></li>
+        <li><button data-target="2c">Testimonials</button></li>
+      </ul>
+    </div>
+    <article class="section" data-id="2a"><h2>Featured projects</h2><p>Highlight your best work with a short description of each project and the result it delivered.</p></article>
+    <article class="section" data-id="2b" hidden><h2>Case studies</h2><p>Walk through a challenge, your approach, and the outcome in a few clear paragraphs.</p></article>
+    <article class="section" data-id="2c" hidden><h2>Testimonials</h2><p>Share kind words from clients or colleagues who have worked with you.</p></article>
+  </section>
+
+  <!-- Tab 3 -->
+  <section class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+    <div class="dd">
+      <button class="dd-btn" aria-haspopup="true" aria-expanded="false"><span class="dd-label">Downloads</span><span class="caret"></span></button>
+      <ul class="dd-menu" hidden>
+        <li><button data-target="3a">Downloads</button></li>
+        <li><button data-target="3b">Articles</button></li>
+        <li><button data-target="3c">Contact</button></li>
+      </ul>
+    </div>
+    <article class="section" data-id="3a"><h2>Downloads</h2><p>Offer a résumé, brochure, or price list that visitors can save for later.</p></article>
+    <article class="section" data-id="3b" hidden><h2>Articles</h2><p>Link to writing, talks, or press that shows your perspective.</p></article>
+    <article class="section" data-id="3c" hidden id="contact"><h2>Contact</h2><p>Tell visitors how to reach you: an email address, phone number, or booking link.</p></article>
+  </section>
+</main>
+
+<footer>© Your Name. All rights reserved.</footer>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+
+  function closeMenus(){
+    document.querySelectorAll('.dd-menu').forEach(function(m){ m.hidden = true; });
+    document.querySelectorAll('.dd-btn').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+  }
+
+  function selectTab(tab, focus){
+    closeMenus();
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function(p){ p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ selectTab(tab, false); });
+    tab.addEventListener('keydown', function(e){
+      var n = null;
+      if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (n){ e.preventDefault(); selectTab(n, true); }
+    });
+  });
+
+  panels.forEach(function(panel){
+    var btn = panel.querySelector('.dd-btn');
+    var menu = panel.querySelector('.dd-menu');
+    var label = panel.querySelector('.dd-label');
+    var sections = panel.querySelectorAll('.section');
+    var items = menu.querySelectorAll('button');
+    if (items[0]) items[0].setAttribute('aria-current','true');
+
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = menu.hidden;
+      closeMenus();
+      menu.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        var id = item.getAttribute('data-target');
+        sections.forEach(function(s){ s.hidden = s.getAttribute('data-id') !== id; });
+        items.forEach(function(i){ i.removeAttribute('aria-current'); });
+        item.setAttribute('aria-current','true');
+        label.textContent = item.textContent;
+        closeMenus();
+        btn.focus();
+      });
+    });
+  });
+
+  document.addEventListener('click', closeMenus);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenus(); });
+})();
+</script>
+</body>
+</html>
