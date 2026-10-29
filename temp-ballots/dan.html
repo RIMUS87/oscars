@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="../files/trilobite.png" sizes="348x348" type="image/png">
+<title>Dan</title>
+<style>
+:root{
+  color-scheme: light;
+  --white:#FFFFFF;
+  --ivory:#FCFAF4;
+  --champagne:#F3E9CF;
+  --gold:#B8913A;
+  --gold-deep:#8A6A1F;
+  --gold-soft:#D9BE7A;
+  --ink:#2A2418;
+  --muted:#6F6650;
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Jost", "Helvetica Neue", Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+
+/* Navigation */
+.nav{background:var(--white);border-bottom:1px solid var(--gold-soft)}
+.nav-inner{max-width:1040px;margin:0 auto;padding:15px 24px 15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.brand{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--gold-deep);text-decoration:none;letter-spacing:.02em}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+.nav li a{text-decoration:none;color:var(--muted);padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.nav li a:hover{color:var(--gold-deep);border-color:var(--gold)}
+
+/* Header */
+.hero{background:linear-gradient(180deg,var(--white) 0%,var(--champagne) 100%);border-bottom:1px solid var(--gold-soft);}
+.hero-inner{max-width:1040px;margin:0 auto;padding:30px 24px 0px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px}
+.avatar{flex:none;width:175px;border-radius:4px;padding:6px;background:linear-gradient(135deg,var(--gold-soft),var(--gold) 50%,var(--gold-deep));box-shadow:0 10px 30px rgba(138,106,31,.25)}
+.avatar img{display:block;width:100%;aspect-ratio:2/3;height:auto;border-radius:2px;border:5px solid var(--white);object-fit:cover;background:var(--ivory)}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.1;margin:0 0 12px;color:var(--ink)}
+.hero p{margin:0 auto;max-width:52ch;color:var(--muted);font-size:1.05rem}
+
+/* Tabs */
+.wrap{max-width:1700px;margin:0 auto;padding:0px 24px 96px;text-align:center}
+.tablist{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:44px;border-bottom:1px solid var(--gold-soft)}
+.tab{font:inherit;font-weight:500;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:12px 22px;color:var(--muted);cursor:pointer;transition:color .2s,background .2s}
+.tab:hover{color:var(--gold-deep);background:var(--champagne)}
+.tab[aria-selected="true"]{color:var(--gold-deep);border-bottom-color:var(--gold);background:var(--white)}
+.panel[hidden]{display:none}
+
+/* Dropdown */
+.dd{position:relative;display:inline-block;margin-bottom:40px}
+.dd-btn{font:inherit;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:18px;min-width:260px;padding:12px 18px;background:var(--white);color:var(--ink);border:1px solid var(--gold);border-radius:4px;cursor:pointer;transition:box-shadow .2s}
+.dd-btn:hover{box-shadow:0 0 0 3px var(--champagne)}
+.dd-btn .caret{width:10px;height:10px;border-right:2px solid var(--gold-deep);border-bottom:2px solid var(--gold-deep);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.dd-btn[aria-expanded="true"] .caret{transform:rotate(225deg) translate(-2px,-2px)}
+.dd-menu{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;background:var(--white);border:1px solid var(--gold-soft);border-radius:4px;box-shadow:0 14px 32px rgba(42,36,24,.12)}
+.dd-menu[hidden]{display:none}
+.dd-menu button{font:inherit;width:100%;text-align:center;background:none;border:0;padding:10px 12px;border-radius:3px;color:var(--ink);cursor:pointer}
+.dd-menu button:hover{background:var(--champagne)}
+.dd-menu button[aria-current="true"]{color:var(--gold-deep);font-weight:500;background:var(--ivory)}
+
+/* Sections */
+.section[hidden]{display:none}
+.section{background:var(--white);border:1px solid var(--gold-soft);border-top:4px solid var(--gold);padding:40px 44px;max-width:4000px;margin:0 auto}
+.section h2{font-family:var(--serif);font-size:1.9rem;font-weight:600;margin:0 0 10px;color:var(--gold-deep)}
+.section p{margin:0;color:var(--ink)}
+
+footer{border-top:1px solid var(--gold-soft);background:var(--white);text-align:center;padding:22px 24px;color:var(--muted);font-size:.92rem}
+
+table {
+    border: 8px solid rgb(0, 0, 0);
+    background-color: rgb(128, 127, 127);
+    text-align: center;
+    table-layout: fixed;
+    width: 98%;
+    margin: 3vh 5%;
+    border-radius: 10px;
+    justify-self: center;
+    font-family:var(--serif);
+}
+tr {
+    height: 4em;
+}
+th {
+    border: 1px solid black;
+    background-color: rgb(216, 170, 3);
+    font-size: 200%;
+    letter-spacing: 0.1em;
+    word-spacing: 0.25em;
+    font-weight: bold;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+td {
+    border: 1px solid black;
+    background-color: white;
+    font-size: 140%;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+    position: relative;
+    min-height: 3em;
+    padding: 0.2em;
+}
+.bars {
+    height: 0.5em;
+}
+.h2-mimic {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: var(--gold-deep)
+}
+.voted {
+    background-image: url('../files/vote.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 2.2em;
+}
+.winner {
+    background-color: rgb(240, 207, 98);
+}
+.stats {
+    border: 8px solid rgb(0, 0, 0);
+    background-color: rgb(128, 127, 127);
+    text-align: center;
+    table-layout: fixed;
+    min-width: 25%;
+    width: auto;
+    max-width: 75%;
+    margin: 3vh 10%;
+    border-radius: 10px;
+    justify-self: center;
+    font-family:var(--serif);
+}
+#girder-top {
+    height: 1em;
+}
+#girder-bottom {
+    height: 1em;
+}
+
+@media (max-width:720px){
+  .hero-inner{padding-top:48px}
+  .nav ul{gap:28px}
+  .tablist{gap:8px}
+  .dd,.dd-btn{display:flex;width:100%}
+  .section{padding:22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="nav-inner">
+    <ul>
+      <li><a href="ballots.html">Ballot Summaries</a></li>
+      <li><a href="temp-search-filter.html">Search & Filter</a></li>
+      <li><a href="https://docs.google.com/forms/d/122RvhJ2YJY_JTmUwkU-YwLfzVoe3JGA8MtIDTD0CCz4/edit" target="_blank">Google Form</a></li>
+      <li><a href="https://letterboxd.com/robbuffet87/list/every-academy-award-nominated-film/" target="_blank">Letterboxd List</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div class="avatar">
+      <img alt="Name" src="../files/nominee-profiles/void-pic1.png">
+    </div>
+    <div>
+      <h2 class="h2-mimic">Dan</h2>
+      <p></p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="content">
+  <div class="tablist" role="tablist" aria-label="Page tabs">
+    <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">Ballots</button>
+    <button class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">Results</button>
+  </div>
+
+  <!-- Tab 1 -->
+  <section class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+    <div class="dd">
+      <button class="dd-btn" aria-haspopup="true" aria-expanded="false"><span class="dd-label">Ceremony Year</span><span class="caret"></span></button>
+      <ul class="dd-menu" hidden>
+        <li><button data-target="1a">2026</button></li>
+      </ul>
+    </div>
+    <article class="section" data-id="1a"><h2>2026</h2>
+      <p>
+      <table>
+        <tr id="girder-top">
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+        </tr>
+        <tr>
+            <th colspan="60">Best Picture</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Bugonia</td>
+            <td colspan="12">F1</td>
+            <td colspan="12">Frankenstein</td>
+            <td colspan="12">Hamnet</td>
+            <td colspan="12">Marty Supreme</td>
+        </tr>
+        <tr>
+            <td class="winner" colspan="12">One Battle after Another</td>
+            <td colspan="12">Sentimental Value</td>
+            <td colspan="12">Sinners</td>
+            <td colspan="12">The Secret Agent</td>
+            <td colspan="12">Train Dreams</td>
+        </tr>
+        <tr>
+            <th colspan="60">Actor in a Leading Role</th>
+        </tr>
+        <tr>
+            <td colspan="12">Ethan Hawke<br>(Blue Moon)</td>
+            <td colspan="12">Leonardo DiCaprio<br>(One Battle after Another)</td>
+            <td class="winner" colspan="12">Michael B. Jordan<br>(Sinners)</td>
+            <td colspan="12">Timothée Chalamet<br>(Marty Supreme)</td>
+            <td class="voted" colspan="12">Wagner Moura<br>(The Secret Agent)</td>
+        </tr>
+        <tr>
+            <th colspan="60">Actress in a Leading Role</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Emma Stone<br>(Bugonia)</td>
+            <td class="winner" colspan="12">Jessie Buckley<br>(Hamnet)</td>
+            <td colspan="12">Kate Hudson<br>(Song Sung Blue)</td>
+            <td colspan="12">Renate Reinsve<br>(Sentimental Value)</td>
+            <td colspan="12">Rose Byrne<br>(If I Had Legs I'd Kick You)</td>
+        </tr>
+        <tr>
+            <th colspan="60">Actor in a Supporting Role</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Benicio Del Toro<br>(One Battle after Another)</td>
+            <td colspan="12">Delroy Lindo<br>(Sinners)</td>
+            <td colspan="12">Jacob Elordi<br>(Frankenstein)</td>
+            <td class="winner" colspan="12">Sean Penn<br>(One Battle after Another)</td>
+            <td colspan="12">Stellan Skarsgård<br>(Sentimental Value)</td>
+        </tr>
+        <tr>
+            <th colspan="60">Actress in a Supporting Role</th>
+        </tr>
+        <tr>
+            <td class="winner" colspan="12">Amy Madigan<br>(Weapons)</td>
+            <td colspan="12">Elle Fanning<br>(Sentimental Value)</td>
+            <td colspan="12">Inga Ibsdotter Lilleaas<br>(Sentimental Value)</td>
+            <td class="voted" colspan="12">Teyana Taylor<br>(One Battle after Another)</td>
+            <td colspan="12">Wunmi Mosaku<br>(Sinners)</td>
+        </tr>
+        <tr>
+            <th colspan="60">Directing</th>
+        </tr>
+        <tr>
+            <td colspan="12">Chloé Zhao<br>(Hamnet)</td>
+            <td class="voted" colspan="12">Joachim Trier<br>(Sentimental Value)</td>
+            <td colspan="12">Josh Safdie<br>(Marty Supreme)</td>
+            <td class="winner" colspan="12">Paul Thomas Anderson<br>(One Battle after Another)</td>
+            <td colspan="12">Ryan Coogler<br>(Sinners)</td>
+        </tr>
+        <tr>
+            <th colspan="60">Writing (Original Screenplay)</th>
+        </tr>
+        <tr>
+            <td colspan="12">Blue Moon</td>
+            <td colspan="12">It Was Just an Accident</td>
+            <td colspan="12">Marty Supreme</td>
+            <td class="voted" colspan="12">Sentimental Value</td>
+            <td class="winner" colspan="12">Sinners</td>
+        </tr>
+        <tr>
+            <th colspan="60">Writing (Adapted Screenplay)</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Bugonia</td>
+            <td colspan="12">Frankenstein</td>
+            <td colspan="12">Hamnet</td>
+            <td class="winner" colspan="12">One Battle after Another</td>
+            <td colspan="12">Train Dreams</td>
+        </tr>
+        <tr>
+            <th colspan="60">Cinematography</th>
+        </tr>
+        <tr>
+            <td colspan="12">Frankenstein</td>
+            <td colspan="12">Marty Supreme</td>
+            <td class="voted" colspan="12">One Battle after Another</td>
+            <td class="winner" colspan="12">Sinners</td>
+            <td colspan="12">Train Dreams</td>
+        </tr>
+        <tr>
+            <th colspan="60">Film Editing</th>
+        </tr>
+        <tr>
+            <td colspan="12">F1</td>
+            <td colspan="12">Marty Supreme</td>
+            <td class="winner" colspan="12">One Battle after Another</td>
+            <td class="voted" colspan="12">Sentimental Value</td>
+            <td colspan="12">Sinners</td>
+        </tr>
+        <tr>
+            <th colspan="60">Casting</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Hamnet</td>
+            <td colspan="12">Marty Supreme</td>
+            <td class="winner" colspan="12">One Battle after Another</td>
+            <td colspan="12">Sinners</td>
+            <td colspan="12">The Secret Agent</td>
+        </tr>
+        <tr>
+            <th colspan="60">Production Design</th>
+        </tr>
+        <tr>
+            <td class="voted winner" colspan="12">Frankenstein</td>
+            <td colspan="12">Hamnet</td>
+            <td colspan="12">Marty Supreme</td>
+            <td colspan="12">One Battle after Another</td>
+            <td colspan="12">Sinners</td>
+        </tr>
+        <tr>
+            <th colspan="60">Costume Design</th>
+        </tr>
+        <tr>
+            <td colspan="12">Avatar: Fire and Ash</td>
+            <td class="voted winner" colspan="12">Frankenstein</td>
+            <td colspan="12">Hamnet</td>
+            <td colspan="12">Marty Supreme</td>
+            <td colspan="12">Sinners</td>
+        </tr>
+        <tr>
+            <th colspan="60">Makeup and Hairstyling</th>
+        </tr>
+        <tr>
+            <td class="winner" colspan="12">Frankenstein</td>
+            <td colspan="12">Kokuho</td>
+            <td class="voted" colspan="12">Sinners</td>
+            <td colspan="12">The Smashing Machine</td>
+            <td colspan="12">The Ugly Stepsister</td>
+        </tr>
+        <tr>
+            <th colspan="60">Visual Effects</th>
+        </tr>
+        <tr>
+            <td class="winner" colspan="12">Avatar: Fire and Ash</td>
+            <td colspan="12">F1</td>
+            <td class="voted" colspan="12">Jurassic World Rebirth</td>
+            <td colspan="12">Sinners</td>
+            <td colspan="12">The Lost Bus</td>
+        </tr>
+        <tr>
+            <th colspan="60">Sound</th>
+        </tr>
+        <tr>
+            <td class="voted winner" colspan="12">F1</td>
+            <td colspan="12">Frankenstein</td>
+            <td colspan="12">One Battle after Another</td>
+            <td colspan="12">Sinners</td>
+            <td colspan="12">Sirāt</td>
+        </tr>
+        <tr>
+            <th colspan="60">Music (Original Score)</th>
+        </tr>
+        <tr>
+            <td class="voted" colspan="12">Bugonia</td>
+            <td colspan="12">Frankenstein</td>
+            <td colspan="12">Hamnet</td>
+            <td colspan="12">One Battle after Another</td>
+            <td class="winner" colspan="12">Sinners</td>
+        </tr>
+        <tr>
+            <th colspan="60">Music (Original Song)</th>
+        </tr>
+        <tr>
+            <td colspan="12">Dear Me<br>(Diane Warren: Relentless)</td>
+            <td class="voted winner" colspan="12">Golden<br>(KPop Demon Hunters)</td>
+            <td colspan="12">I Lied To You<br>(Sinners)</td>
+            <td colspan="12">Sweet Dreams Of Joy<br>(Viva Verdi!)</td>
+            <td colspan="12">Train Dreams<br>(Train Dreams)</td>
+        </tr>
+        <tr>
+            <th colspan="60">International Feature Film</th>
+        </tr>
+        <tr>
+            <td colspan="12">It Was Just an Accident</td>
+            <td class="winner" colspan="12">Sentimental Value</td>
+            <td colspan="12">Sirāt</td>
+            <td class="voted" colspan="12">The Secret Agent</td>
+            <td colspan="12">The Voice of Hind Rajab</td>
+        </tr>
+        <tr>
+            <th colspan="60">Animated Feature Film</th>
+        </tr>
+        <tr>
+            <td colspan="12">Arco</td>
+            <td colspan="12">Elio</td>
+            <td class="winner" colspan="12">KPop Demon Hunters</td>
+            <td class="voted" colspan="12">Little Amélie or the Character of Rain</td>
+            <td colspan="12">Zootopia 2</td>
+        </tr>
+        <tr>
+            <th colspan="60">Documentary Feature Film</th>
+        </tr>
+        <tr>
+            <td colspan="12">Come See Me in the Good Light</td>
+            <td colspan="12">Cutting through Rocks</td>
+            <td class="voted winner" colspan="12">Mr. Nobody against Putin</td>
+            <td colspan="12">The Alabama Solution</td>
+            <td colspan="12">The Perfect Neighbor</td>
+        </tr>
+        <tr>
+            <th colspan="60">Live Action Short Film</th>
+        </tr>
+        <tr>
+            <td colspan="12">A Friend of Dorothy</td>
+            <td class="voted" colspan="12">Butcher's Stain</td>
+            <td colspan="12">Jane Austen's Period Drama</td>
+            <td class="winner" colspan="12">The Singers</td>
+            <td class="winner" colspan="12">Two People Exchanging Saliva</td>
+        </tr>
+        <tr>
+            <th colspan="60">Animated Short Film</th>
+        </tr>
+        <tr>
+            <td colspan="12">Butterfly</td>
+            <td colspan="12">Forevergreen</td>
+            <td colspan="12">Retirement Plan</td>
+            <td class="winner" colspan="12">The Girl Who Cried Pearls</td>
+            <td class="voted" colspan="12">The Three Sisters</td>
+        </tr>
+        <tr>
+            <th colspan="60">Documentary Short Film</th>
+        </tr>
+        <tr>
+            <td class="winner" colspan="12">All the Empty Rooms</td>
+            <td colspan="12">Armed Only with a Camera: The Life and Death of Brent Renaud</td>
+            <td colspan="12">Children No More: "Were and Are Gone"</td>
+            <td colspan="12">Perfectly a Strangeness</td>
+            <td class="voted" colspan="12">The Devil Is Busy</td>
+        </tr>
+        <tr id="girder-bottom">
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+            <td class="bars"></td>
+        </tr>
+      </table>
+      </p>
+    </article>
+  </section>
+
+  <!-- Tab 2 -->
+  <section class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+    <div class="dd">
+      <button class="dd-btn" aria-haspopup="true" aria-expanded="false"><span class="dd-label">Ceremony Year</span><span class="caret"></span></button>
+      <ul class="dd-menu" hidden>
+        <li><button data-target="2a">2026</button></li>
+      </ul>
+    </div>
+    <article class="section" data-id="2a"><h2>2026</h2>
+        <p>
+        <table>
+            <tr>
+                <th colspan="3">Score</th>
+            </tr>
+            <tr>
+                <td>17th Place</td>
+                <td>5 Categories</td>
+                <td>5 Points</td>
+            </tr>
+            <tr>
+                <th colspan="3">Correct Categories</th>
+            </tr>
+            <tr>
+                <td colspan="3">Production Design | Costume Design | Sound | Music (Original Song) | Documentary Feature Film</td>
+            </tr>
+        </table>
+        </p>
+    </article>
+  </section>
+</main>
+
+<footer></footer>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+
+  function closeMenus(){
+    document.querySelectorAll('.dd-menu').forEach(function(m){ m.hidden = true; });
+    document.querySelectorAll('.dd-btn').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+  }
+
+  function selectTab(tab, focus){
+    closeMenus();
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function(p){ p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ selectTab(tab, false); });
+    tab.addEventListener('keydown', function(e){
+      var n = null;
+      if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (n){ e.preventDefault(); selectTab(n, true); }
+    });
+  });
+
+  panels.forEach(function(panel){
+    var btn = panel.querySelector('.dd-btn');
+    var menu = panel.querySelector('.dd-menu');
+    var label = panel.querySelector('.dd-label');
+    var sections = panel.querySelectorAll('.section');
+    var items = menu.querySelectorAll('button');
+    if (items[0]) items[0].setAttribute('aria-current','true');
+
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = menu.hidden;
+      closeMenus();
+      menu.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        var id = item.getAttribute('data-target');
+        sections.forEach(function(s){ s.hidden = s.getAttribute('data-id') !== id; });
+        items.forEach(function(i){ i.removeAttribute('aria-current'); });
+        item.setAttribute('aria-current','true');
+        label.textContent = item.textContent;
+        closeMenus();
+        btn.focus();
+      });
+    });
+  });
+
+  document.addEventListener('click', closeMenus);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenus(); });
+})();
+</script>
+</body>
+</html>
